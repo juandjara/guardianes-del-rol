@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import logo from '../assets/logo-guardianes.png';
 import withAuth from './withAuth'
 import Button from './Button';
+import Icon from './Icon';
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -22,6 +23,10 @@ const HeaderStyle = styled.header`
       vertical-align: middle;
       margin: 0 8px;
     }
+  }
+  .material-icons {
+    margin-bottom: 4px;
+    margin-right: 6px;
   }
   nav {
     a {
@@ -95,22 +100,40 @@ class Header extends Component {
       <HeaderStyle className="App-header">
         <h1>
           <img src={logo} className="App-logo" alt="logo" />
-          Guardianes Studio
+          Guardianes Role Master
         </h1>
         {user && (<nav className="big-nav">
-          <Link activeClassName="active" to="/post">Partidas</Link>
-          <Link activeClassName="active" to="/category">Categorias</Link>
-          <Link activeClassName="active" to="/gallery">Galer&iacute;a</Link>
-          <Button onClick={() => auth.signOut()}>Cerrar sesion</Button>
+          <Link activeClassName="active" to="/post">
+            Partidas
+          </Link>
+          <Link activeClassName="active" to="/category">
+            Categorias
+          </Link>
+          <Link activeClassName="active" to="/gallery">
+            Galer&iacute;a
+          </Link>
+          <Button onClick={() => auth.signOut()}>
+            <Icon icon="person_outline" size="1em" />
+            Cerrar sesion
+          </Button>
           <img src={user && user.photoURL} alt="user avatar" />
         </nav>)}
         {user && (
           <div className="small-nav">
             <Button onClick={() => this.toggle()} className="toggle">Men&uacute;</Button>
             <nav className={this.state.open ? 'open' : ''}>
-              <Link activeClassName="active" to="/post">Partidas</Link>
-              <Link activeClassName="active" to="/category">Categorias</Link>
-              <Link activeClassName="active" to="/gallery">Galer&iacute;a</Link>
+              <Link activeClassName="active" to="/post">
+                <Icon icon="insert_drive_file" size="1em" />
+                Partidas
+              </Link>
+              <Link activeClassName="active" to="/category">
+                <Icon icon="label" size="1em" />
+                Categorias
+              </Link>
+              <Link activeClassName="active" to="/gallery">
+                <Icon icon="photo" size="1em" />
+                Galer&iacute;a
+              </Link>
               <div className="logout">
                 <span>{user.email}</span>
                 <Button onClick={() => auth.signOut()}>Cerrar sesion</Button>

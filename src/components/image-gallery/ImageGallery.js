@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import ImageGrid from './ImageGrid';
 import slugg from 'slugg';
-import Emoji from '../Emoji';
+import Icon from '../Icon';
 
 const GalleryStyle = styled.div`
   padding: 10px;
@@ -15,6 +15,10 @@ const GalleryStyle = styled.div`
   > button {
     display: block;
     margin-bottom: 12px;
+    .material-icons {
+      margin-right: 4px;
+      margin-bottom: 2px;
+    }
   }
   [type=file] {
     display: none;
@@ -41,13 +45,13 @@ const ModalStyle = styled.div`
       display: block;
       margin: 0;
       margin-left: auto;
-      padding: 10px;
-      font-size: 12px;
+      padding: 4px;
       border: none;
       border-radius: 0;
+      border-bottom: 1px solid transparent;
+      border-left: 1px solid transparent;
       &:hover {
-        border-bottom: 1px solid #ccc;
-        border-left: 1px solid #ccc;
+        border-color: #ccc;
       }
     }
     img {
@@ -209,6 +213,7 @@ class ImageGallery extends Component {
       <GalleryStyle className="container">
         <h2>Galer&iacute;a de im&aacute;genes</h2>
         <Button onClick={() => this._inputNode && this._inputNode.click()}>
+          <Icon icon="cloud_upload" size={16} />
           Subir imagen
         </Button>
         <input 
@@ -231,7 +236,7 @@ class ImageGallery extends Component {
                   className="close-modal"
                   title="Cerrar" 
                 >
-                  <Emoji label="close" children="❌" />
+                  <Icon icon="close" size={20} />
                 </Button>
               </div>
               <div className="inner">

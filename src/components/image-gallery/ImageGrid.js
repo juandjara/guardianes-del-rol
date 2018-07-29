@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import Button from '../Button';
-import Emoji from '../Emoji';
 
 const GridStyle = styled.div`
   display: flex;
@@ -49,6 +48,12 @@ const GridStyle = styled.div`
           display: block;
           margin-left: auto;
           font-size: 8px;
+          padding: 0;
+          height: 24px;
+          width: 24px;
+          .material-icons {
+            font-size: 16px;
+          }
         }
       }
       &.loading {
@@ -104,9 +109,8 @@ const ImageGrid = ({images, onDelete, onClick}) => {
                   <div className="actions">
                     <Button 
                       onClick={(ev) => onDelete(img, ev)}
-                      title="Borrar imagen" 
-                    >
-                      <Emoji label="close" children="❌" />
+                      title="Borrar imagen" >
+                      <i className="material-icons">close</i>
                     </Button>
                   </div>
                 )}

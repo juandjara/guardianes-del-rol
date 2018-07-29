@@ -133,49 +133,52 @@ class PostEdit extends Component {
   }
 
   render() {
+    const post = this.state.post;
     return (
       <EditStyle className="container">
         <Button onClick={() => this.goBack()}>Volver</Button>
-        <h2>Nueva partida</h2>
+        <Button>Ver publicaci&oacute;n</Button>
+        <h2>Editar partida</h2>
         {this.state.loading ? 'Cargando...' : (
           <Fragment>
             <div className="form-group">
               <label htmlFor="title">T&iacute;tulo</label>
               <input type="text" 
-                value={this.state.post.title}
+                value={post.title}
                 onChange={ev => this.edit('title', ev.target.value)}
               />
             </div>
             <div className="form-group">
               <label htmlFor="date">Fecha</label>
               <input type="date" name="date"
-                value={this.state.post.date}
+                placeholder="YYYY-MM-DD"
+                value={post.date}
                 onChange={ev => this.edit('date', ev.target.value)} />
             </div>
             <div className="form-group">
               <label htmlFor="hour">Hora</label>
               <input type="text" name="hour"
                 placeholder="HH:MM"
-                value={this.state.post.hour}
+                value={post.hour}
                 onChange={ev => this.edit('hour', ev.target.value)} />
             </div>
             <div className="form-group">
               <label>Descripci&oacute;n</label>
               <Editor
-                value={this.state.post.description}
+                value={post.description}
                 onChange={value => this.edit('description', value)}
               />
             </div>
             <div className="form-group">
               <label htmlFor="totalSeats">Plazas totales</label>
               <input type="number"
-                value={this.state.post.totalSeats}
+                value={post.totalSeats}
                 onChange={ev => this.edit('totalSeats', ev.target.value)} />
             </div>
             <div className="form-group">
               <label htmlFor="fullSeats">Plazas ocupadas</label>
               <input type="number" name="fullSeats"
-                value={this.state.post.fullSeats}
+                value={post.fullSeats}
                 onChange={ev => this.edit('fullSeats', ev.target.value)} />
             </div>
             <Button onClick={() => this.save()}>Guardar</Button>

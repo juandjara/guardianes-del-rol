@@ -1,4 +1,5 @@
 @import '~react-quill/dist/quill.snow.css';
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 * {
   box-sizing: border-box;
@@ -37,4 +38,8 @@ ul {
 
 .ql-toolbar.ql-snow .ql-formats {
   margin-right: 14px;
+}
+
+.material-icons {
+  vertical-align: middle;
 }
