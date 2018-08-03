@@ -3,6 +3,7 @@ import { db } from '../../firebase';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Button';
+import Icon from '../Icon';
 
 const PostListStyle = styled.div`
   padding: 10px;
@@ -13,14 +14,18 @@ const PostListStyle = styled.div`
   > a {
     display: block;
     margin-bottom: 10px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
     font-size: 12px;
+    .material-icons {
+      margin-bottom: 2px;
+    }
   }
   ul {
     li {
       margin: 8px;
     }
+  }
+  .material-icons {
+    margin-right: 4px;
   }
 `;
 
@@ -44,7 +49,10 @@ class PostList extends Component {
       <PostListStyle className="container">
         <h2>Partidas</h2>
         <Link to="/post/new">
-          <Button>Nueva partida</Button>
+          <Button>
+            <Icon icon="create" size="1em" />
+            Nueva partida
+          </Button>
         </Link>
         {this.state.loading ? 'Cargando...' : (
           <ul>
