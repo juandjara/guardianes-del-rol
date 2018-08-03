@@ -11,6 +11,11 @@ body {
   font-family: sans-serif;
   color: #191919;
   background-color: #fafafa;
+
+  background-image: url("https://i.pinimg.com/originals/18/2a/f4/182af46d3d6be2802bdce0cf75a8c0f4.jpg");
+  background-repeat: repeat;
+  background-position: center center;
+  background-size: 50%;
 }
 
 h1,h2,h3 {
@@ -37,7 +42,8 @@ ul {
 
 .container {
   max-width: 768px;
-  margin: 0 auto;
+  margin: 20px auto;
+  background-color: #fafafa;
 }
 
 .ql-toolbar.ql-snow .ql-formats {
