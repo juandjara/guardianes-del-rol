@@ -3,6 +3,7 @@ import Editor from './Editor';
 import styled from 'styled-components';
 import Button from '../Button';
 import { db } from '../../firebase';
+import slug from 'slugg';
 
 const EditStyle = styled.div`
   padding: 20px 10px;
@@ -37,6 +38,11 @@ const EditStyle = styled.div`
   > h2 {
     text-align: center;
     font-size: 30px;
+  }
+  > nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 `;
 
@@ -81,7 +87,12 @@ class PostEdit extends Component {
 
   save() {
     const id = this.state.post.id;
-    const promise = id ? this.update(id) : this.create();
+    const post = {
+      ...this.state.post,
+      description: JSON.stringify(this.state.post.description),
+      slug: slug(this.state.post.title)
+    }
+    const promise = id ? this.update(id, post) : this.create(post);
     promise.then(() => {
       this.props.history.push('/post');
     }).catch(err => {
@@ -90,22 +101,18 @@ class PostEdit extends Component {
     });
   }
 
-  create() {
+  create(post) {
     const coll = db.collection('posts');
     const newId = coll.doc().id;
     return coll.add({
-      ...this.state.post,
-      description: JSON.stringify(this.state.post.description),
+      ...post,
       id: newId
     })
   }
 
-  update(id) {
+  update(id, post) {
     return db.collection('posts')
-    .doc(id).update({
-      ...this.state.post,
-      description: JSON.stringify(this.state.post.description)
-    })
+    .doc(id).update(post)
   }
 
   delete() {
@@ -136,8 +143,12 @@ class PostEdit extends Component {
     const post = this.state.post;
     return (
       <EditStyle className="container">
-        <Button onClick={() => this.goBack()}>Volver</Button>
-        <Button>Ver publicaci&oacute;n</Button>
+        <nav>
+          <Button onClick={() => this.goBack()}>Volver</Button>
+          {post.id ? (
+            <a href={`https://guardianes.now.sh/post/${post.slug}`}>Ver publicaci&oacute;n</a>
+          ) : null}
+        </nav>
         <h2>Editar partida</h2>
         {this.state.loading ? 'Cargando...' : (
           <Fragment>
