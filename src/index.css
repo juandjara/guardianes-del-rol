@@ -42,8 +42,17 @@ ul {
 
 .container {
   max-width: 768px;
+  min-height: calc(100vh - 120px);
+  border-radius: 4px;
   margin: 20px auto;
   background-color: #fafafa;
+}
+
+@media (max-width: 600px) {
+  .container {
+    margin: 0 auto;
+    border-radius: 0;
+  }
 }
 
 .ql-toolbar.ql-snow .ql-formats {

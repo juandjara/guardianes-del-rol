@@ -8,7 +8,6 @@ import Icon from '../Icon';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
-  border-radius: 4px;
   .ql-container, .ql-editor {
     border-radius: 0 0 4px 4px;
   }
@@ -209,7 +208,7 @@ class PostEdit extends Component {
             </div>
             <Button onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />
-              Publicar
+              Publicar {post.id && 'cambios'}
             </Button>
             <Button onClick={() => this.delete()}>
               <Icon icon="close" size="1em" />

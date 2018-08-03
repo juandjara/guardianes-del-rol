@@ -15,11 +15,11 @@ const HeaderStyle = styled.header`
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  background-color: firebrick;
+  background-color: #c0392b;
   color: #fafafa;
   h1 {
     font-weight: normal;
-    margin: 8px 0;
+    margin: 4px 0;
     white-space: nowrap;
     font-size: 28px;
     .logo {
@@ -45,10 +45,9 @@ const HeaderStyle = styled.header`
     }
     .avatar {
       border-radius: 50%;
-      border: 2px solid #c0392b;
       height: 60px;
       vertical-align: middle;
-      margin: 0 8px;
+      padding: 0 8px;
     }
   }
   @media (max-width: 600px) {
