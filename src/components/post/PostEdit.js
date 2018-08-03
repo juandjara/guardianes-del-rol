@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import { db } from '../../firebase';
 import slug from 'slugg';
+import Icon from '../Icon';
 
 const EditStyle = styled.div`
   padding: 20px 10px;
@@ -43,6 +44,9 @@ const EditStyle = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+  .material-icons {
+    margin-right: 4px;
   }
 `;
 
@@ -144,9 +148,15 @@ class PostEdit extends Component {
     return (
       <EditStyle className="container">
         <nav>
-          <Button onClick={() => this.goBack()}>Volver</Button>
+          <Button onClick={() => this.goBack()}>
+            <Icon icon="arrow_back" size="1em" />
+            Volver
+          </Button>
           {post.id ? (
-            <a href={`https://guardianes.now.sh/post/${post.slug}`}>Ver publicaci&oacute;n</a>
+            <a href={`https://guardianes.now.sh/post/${post.slug}`}>
+              <Icon icon="public" size="1em" />
+              Ver publicaci&oacute;n
+            </a>
           ) : null}
         </nav>
         <h2>Editar partida</h2>
@@ -192,8 +202,14 @@ class PostEdit extends Component {
                 value={post.fullSeats}
                 onChange={ev => this.edit('fullSeats', ev.target.value)} />
             </div>
-            <Button onClick={() => this.save()}>Guardar</Button>
-            <Button onClick={() => this.delete()}>Borrar</Button>
+            <Button onClick={() => this.save()}>
+              <Icon icon="save_alt" size="1em" />
+              Guardar
+            </Button>
+            <Button onClick={() => this.delete()}>
+              <Icon icon="close" size="1em" />
+              Borrar
+            </Button>
           </Fragment>
         )}
       </EditStyle>
