@@ -223,9 +223,10 @@ class ImageGallery extends Component {
           ref={node => { this._inputNode = node; }} />
         {loading ? 'Cargando...' : (
           <ImageGrid 
+            images={images}  
             onClick={img => this.openDetails(img)}
             onDelete={(img, ev) => this.deleteImage(img, ev)} 
-            images={images} />
+            showDelete />
         )}
         {selectedImage ? (
           <ModalStyle onClick={() => this.closeDetails()}>

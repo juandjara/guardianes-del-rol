@@ -8,7 +8,7 @@ const GridStyle = styled.div`
   padding: 0 4px;
   .column {
     flex: 25%;
-    max-width: 25%;
+    max-width: 50%;
     padding: 0 4px;
     .img-container {
       margin-top: 8px;
@@ -16,6 +16,10 @@ const GridStyle = styled.div`
       width: 100%;
       background: white;
       position: relative;
+      transition: transform 0.2s;
+      &:hover {
+        transform: scale(1.05);
+      }
       img {
         width: 100%;
         height: auto;
@@ -78,14 +82,14 @@ const GridStyle = styled.div`
   }
 `;
 
-const ImageGrid = ({images, onDelete, onClick}) => {
+const ImageGrid = ({images, showDelete, onDelete, onClick}) => {
   const maxColumns = Math.ceil(images.length / 4);
   const columns = [
     images.slice(0, maxColumns),
     images.slice(maxColumns, maxColumns * 2),
     images.slice(maxColumns * 2, maxColumns * 3),
     images.slice(maxColumns * 3)
-  ];
+  ].filter(col => col.length > 0);
   return (
     <GridStyle>
       {columns.map((images, index) => (
@@ -107,11 +111,13 @@ const ImageGrid = ({images, onDelete, onClick}) => {
                   </div>
                 ) : (
                   <div className="actions">
-                    <Button 
-                      onClick={(ev) => onDelete(img, ev)}
-                      title="Borrar imagen" >
-                      <i className="material-icons">close</i>
-                    </Button>
+                    {showDelete ? (
+                      <Button 
+                        onClick={(ev) => onDelete(img, ev)}
+                        title="Borrar imagen" >
+                        <i className="material-icons">close</i>
+                      </Button>
+                    ) : null}
                   </div>
                 )}
               </div>
