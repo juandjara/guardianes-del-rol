@@ -7,13 +7,17 @@ import slug from 'slugg';
 import Icon from '../Icon';
 
 const EditStyle = styled.div`
-  padding: 20px 10px;
+  padding: 20px 14px;
+  border-radius: 4px;
   .ql-container, .ql-editor {
     border-radius: 0 0 4px 4px;
   }
   .ql-editor {
     background: white;
     min-height: 150px;
+  }
+  .back-btn {
+    margin: 0;
   }
   .form-group {
     margin-top: 1em;
@@ -47,6 +51,7 @@ const EditStyle = styled.div`
   }
   .material-icons {
     margin-right: 4px;
+    margin-bottom: 2px;
   }
 `;
 
@@ -148,7 +153,7 @@ class PostEdit extends Component {
     return (
       <EditStyle className="container">
         <nav>
-          <Button onClick={() => this.goBack()}>
+          <Button className="back-btn" onClick={() => this.goBack()}>
             <Icon icon="arrow_back" size="1em" />
             Volver
           </Button>
@@ -203,8 +208,8 @@ class PostEdit extends Component {
                 onChange={ev => this.edit('fullSeats', ev.target.value)} />
             </div>
             <Button onClick={() => this.save()}>
-              <Icon icon="save_alt" size="1em" />
-              Guardar
+              <Icon icon="publish" size="1em" />
+              Publicar
             </Button>
             <Button onClick={() => this.delete()}>
               <Icon icon="close" size="1em" />
