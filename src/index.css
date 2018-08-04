@@ -9,13 +9,12 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  color: #191919;
-  background-color: #fafafa;
+  color: #fafafa;
 
   background-image: url("https://i.pinimg.com/originals/18/2a/f4/182af46d3d6be2802bdce0cf75a8c0f4.jpg");
   background-repeat: repeat;
   background-position: center center;
-  background-size: 50%;
+  /* background-size: 50%; */
 }
 
 h1,h2,h3 {
@@ -46,9 +45,13 @@ ul {
   border-radius: 4px;
   margin: 20px auto;
   background-color: #fafafa;
+  color: #191919;
 }
 
 @media (max-width: 600px) {
+  body {
+    /* background-size: 100%; */
+  }
   .container {
     margin: 0 auto;
     border-radius: 0;

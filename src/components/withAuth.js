@@ -10,29 +10,44 @@ function withAuth(WrappedComponent) {
       user: auth.currentUser
     }
     componentDidMount() {
+      this.listenAuth();
+    }
+
+    listenAuth() {
       auth.onAuthStateChanged(user => {
-        if (user && !this.state.user) {
-          db.collection('users')
-          .where('email', '==', user.email)
-          .get()
-          .then(res => {
-            if (res.empty) {
-              auth.signOut();
-              window.alert('Este usuario necesita invitación')
-            }
-            this.setState({
-              loadingAuth: false,
-              user: res.empty ? null : user
-            })
-          })
-        } else if (!user) {
+        if (!user) {
           this.setState({
             loadingAuth: false,
             user: null
           })
         }
+        if (user && !this.state.user) {
+          this.setState({user}, () => {
+            this.listenUserDB();
+          })
+        }
       })
     }
+
+    listenUserDB() {
+      const user = this.state.user;
+      db.collection('users')
+      .doc(user.email)
+      .onSnapshot(
+        (snapshot) => {
+          if (!snapshot.exists) {
+            auth.signOut()
+            window.alert('Este usuario no está en la lista de invitados')
+          }
+          this.setState({
+            loadingAuth: false,
+            user: snapshot.empty ? null : {...user, ...snapshot.data()}
+          })
+        },
+        (err) => { console.error(err) }
+      )
+    }
+
     render() {
       return (
         <WrappedComponent 
