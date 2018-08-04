@@ -4,8 +4,6 @@
   "private": true,
   "dependencies": {
     "firebase": "^5.1.0",
-    "rc-dropdown": "^2.2.0",
-    "rc-menu": "^7.2.6",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
     "react-quill": "^1.4.0-beta.1",

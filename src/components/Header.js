@@ -5,10 +5,6 @@ import logo from '../assets/logo-guardianes.png';
 import withAuth from './withAuth'
 import Button from './Button';
 import Icon from './Icon';
-import Dropdown from 'rc-dropdown';
-import Menu, { Item as MenuItem } from 'rc-menu';
-import 'rc-dropdown/assets/index.css';
-
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -33,6 +29,7 @@ const HeaderStyle = styled.header`
     margin-right: 6px;
   }
   nav {
+    position: relative;
     a {
       padding: 6px 8px;
       margin: 0 4px;
@@ -63,6 +60,21 @@ const HeaderStyle = styled.header`
   }
 `;
 
+const MenuStyle = styled.div`
+  display: ${props => props.open ? 'block': 'none'};
+  position: absolute;
+  top: 100%;
+  right: 0;
+  text-align: right;
+  color: #191919;
+  background-color: #fafafa;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+  margin: 4px;
+  margin-top: 8px;
+`;
+
 class Header extends Component {
   state = { open: false }
   toggle() {
@@ -70,18 +82,6 @@ class Header extends Component {
   }
   render() {
     const user = this.props.user;
-    const menu = user && (
-      <Menu onSelect={() => {}}>
-        <p style={{margin: 10}} subMenuKey="email">{user.email}</p>
-        <Button
-          onClick={() => auth.signOut()}
-          style={{marginLeft: 'auto', display: 'block'}} 
-          subMenuKey="close">
-          <Icon icon="person_outline" size="1em" style={{marginRight: 4}} />
-          Cerrar sesion
-        </Button>
-      </Menu>
-    );
     return (
       <HeaderStyle className="App-header">
         <h1>
@@ -89,11 +89,20 @@ class Header extends Component {
           Guardianes del Rol
         </h1>
         {user && (<nav className="big-nav">
-          <Dropdown
-            animation="slide-up" 
-            overlay={menu}>
-            <img className="avatar" src={user.photoURL} alt="avatar" />
-          </Dropdown>
+          <img 
+            onClick={() => this.setState(state => ({open: !state.open}))}
+            className="avatar" 
+            src={user.photoURL} 
+            alt="avatar" />
+          <MenuStyle open={this.state.open}>
+            <p style={{margin: 10}}>{user.email}</p>
+            <Button
+              onClick={() => auth.signOut()}
+              style={{marginLeft: 'auto', display: 'block'}}>
+              <Icon icon="person_outline" size="1em" style={{marginRight: 4}} />
+              Cerrar sesion
+            </Button>
+          </MenuStyle>
         </nav>)}
       </HeaderStyle>
     );
