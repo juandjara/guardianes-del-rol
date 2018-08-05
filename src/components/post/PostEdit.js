@@ -230,9 +230,10 @@ class PostEdit extends Component {
                 Abrir galer&iacute;a
               </Button>
               <Button 
+                title="Este botón elimina la imagen de la partida pero no la elimina de la galeria"
                 onClick={() => this.edit('mainImageUrl', null)}>
                 <Icon icon="close" size="1em" />
-                Limpiar
+                Limpiar imagen
               </Button>
               {post.mainImageUrl && (
                 <img 

@@ -9,6 +9,8 @@ import Icon from '../Icon';
 const GalleryStyle = styled.div`
   padding: 10px;
   margin: 0 auto;
+  max-height: calc(100vh - 150px);
+  overflow: auto;
   > h2 {
     text-align: center;
     font-size: 28px;
@@ -38,6 +40,7 @@ class ImageGallery extends Component {
     loading: true
   }
   _inputNode = null;
+  _containerNode = null;
 
   componentDidMount() {
     this.fetchImages();
@@ -79,7 +82,12 @@ class ImageGallery extends Component {
     this.setState(state => ({
       ...state,
       images: state.images.concat(image)
-    }))
+    }), () => {
+      const lastImgNode = Array.from(this._containerNode.querySelectorAll('.img-container')).slice(-1)[0];
+      if (lastImgNode) {
+        lastImgNode.scrollIntoView();
+      }
+    })
     uploadTask.on(
       'state_changed',
       (snapshot) => {
@@ -125,10 +133,10 @@ class ImageGallery extends Component {
   }
 
   deleteImage(image, ev) {
-    ev.stopPropagation();
     if(!window.confirm('¿Estas seguro de que quieres borrar esta imagen?')) {
       return;
     }
+    ev.stopPropagation();    
     Promise.all([
       db.collection('images').doc(image.name).delete(),
       storage.child(image.name).delete()
@@ -149,7 +157,9 @@ class ImageGallery extends Component {
   render() {
     const {images, loading} = this.state;
     return (
-      <GalleryStyle className="container">
+      <GalleryStyle 
+        innerRef={node => { this._containerNode = node }} 
+        className="container">
         <h2>Galer&iacute;a de im&aacute;genes</h2>
         <h3>Por favor, seleccione o suba una imagen</h3>
         <Button onClick={() => this._inputNode && this._inputNode.click()}>

@@ -60,6 +60,7 @@ const GridStyle = styled.div`
           width: 24px;
           .material-icons {
             font-size: 16px;
+            margin: 0;
           }
         }
       }
@@ -83,6 +84,13 @@ const GridStyle = styled.div`
     @media screen and (max-width: 600px) {
       flex: 100%;
       max-width: 100%;
+      .img-container:not(.loading) {
+        .actions {
+          opacity: 1;
+          background-color: transparent;
+          transform: none;
+        }
+      }
     }
   }
 `;
