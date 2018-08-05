@@ -10,12 +10,14 @@ body {
   padding: 0;
   font-family: sans-serif;
   color: #fafafa;
+  min-height: 100vh;
 
   background-color: #191919;
-  background-image: url("https://i.pinimg.com/originals/18/2a/f4/182af46d3d6be2802bdce0cf75a8c0f4.jpg");
-  background-repeat: repeat;
-  background-position: bottom center;
-  background-size: 50%;
+  background-image: linear-gradient(rgba(0,0,0, 0.4), rgba(0,0,0, 0.4)), 
+                    url(./assets//dice-bg.jpg);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
 }
 
 h1,h2,h3 {
