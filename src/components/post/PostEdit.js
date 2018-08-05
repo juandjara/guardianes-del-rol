@@ -138,6 +138,9 @@ class PostEdit extends Component {
   }
 
   delete() {
+    if(!window.confirm('¿Estas seguro de que quieres borrar esta partida?')) {
+      return;
+    }
     const id = this.state.post.id;
     db.collection('posts').doc(id).delete()
     .then(() => {
@@ -187,7 +190,7 @@ class PostEdit extends Component {
             </a>
           ) : null}
         </nav>
-        <h2>Editar partida</h2>
+        <h2>{post.id ? 'Editar' : 'Nueva'} partida</h2>
         {this.state.loading ? 'Cargando...' : (
           <Fragment>
             <div className="form-group">
@@ -223,7 +226,13 @@ class PostEdit extends Component {
               <Button 
                 className="btn-gallery"
                 onClick={() => this.setState({showImageGallery: true})}>
+                <Icon icon="photo_library" size="1em" />
                 Abrir galer&iacute;a
+              </Button>
+              <Button 
+                onClick={() => this.edit('mainImageUrl', null)}>
+                <Icon icon="close" size="1em" />
+                Limpiar
               </Button>
               {post.mainImageUrl && (
                 <img 
@@ -254,10 +263,12 @@ class PostEdit extends Component {
               <Icon icon="publish" size="1em" />
               Publicar {post.id && 'cambios'}
             </Button>
-            <Button onClick={() => this.delete()}>
-              <Icon icon="close" size="1em" />
-              Borrar
-            </Button>
+            {post.id && (
+              <Button onClick={() => this.delete()}>
+                <Icon icon="close" size="1em" />
+                Borrar partida
+              </Button>
+            )}
           </Fragment>
         )}
       </EditStyle>
