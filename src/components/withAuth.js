@@ -15,11 +15,12 @@ function withAuth(WrappedComponent) {
 
     listenAuth() {
       auth.onAuthStateChanged(user => {
-        if (!user) {
+        if (!navigator.onLine || !user) {
           this.setState({
             loadingAuth: false,
             user: null
           })
+          return;
         }
         if (user && !this.state.user) {
           this.setState({user}, () => {

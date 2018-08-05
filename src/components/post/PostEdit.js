@@ -5,6 +5,8 @@ import Button from '../Button';
 import { db } from '../../firebase';
 import slug from 'slugg';
 import Icon from '../Icon';
+import Modal from 'react-awesome-modal';
+import ImageGallery from '../image-gallery/ImageGallery';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -32,6 +34,9 @@ const EditStyle = styled.div`
       &:focus {
         border-color: dodgerblue;
       }
+      &[type=file] {
+        display: none;
+      }
     }
     label {
       font-size: smaller;
@@ -52,11 +57,20 @@ const EditStyle = styled.div`
     margin-right: 4px;
     margin-bottom: 2px;
   }
+  .btn-gallery {
+    margin: 0;
+  }
+  .selected-image {
+    margin-top: 8px;
+    max-height: 150px;
+    display: block;
+  }
 `;
 
 class PostEdit extends Component {
   state = {
     loading: true,
+    showImageGallery: false,
     post: {
       id: null,
       title: '',
@@ -147,6 +161,16 @@ class PostEdit extends Component {
     }))
   }
 
+  selectImage(img) {
+    this.setState(state => ({
+      post: {
+        ...state.post,
+        mainImageUrl: img.downloadUrl
+      },
+      showImageGallery: false
+    }))
+  }
+
   render() {
     const post = this.state.post;
     return (
@@ -195,6 +219,26 @@ class PostEdit extends Component {
               />
             </div>
             <div className="form-group">
+              <label>Imagen de portada</label>
+              <Button 
+                className="btn-gallery"
+                onClick={() => this.setState({showImageGallery: true})}>
+                Abrir galer&iacute;a
+              </Button>
+              {post.mainImageUrl && (
+                <img 
+                  src={post.mainImageUrl}
+                  alt="imagen seleccionada"
+                  className="selected-image"
+                  style={{marginTop: 8, maxHeight: 150, display: 'block'}} />
+              )}
+              <Modal 
+                visible={this.state.showImageGallery}
+                onClickAway={() => this.setState({showImageGallery: false})}>
+                <ImageGallery onClick={img => this.selectImage(img)} />
+              </Modal>
+            </div>
+            <div className="form-group">
               <label htmlFor="totalSeats">Plazas totales</label>
               <input type="number"
                 value={post.totalSeats}
@@ -206,7 +250,7 @@ class PostEdit extends Component {
                 value={post.fullSeats}
                 onChange={ev => this.edit('fullSeats', ev.target.value)} />
             </div>
-            <Button onClick={() => this.save()}>
+            <Button main onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />
               Publicar {post.id && 'cambios'}
             </Button>

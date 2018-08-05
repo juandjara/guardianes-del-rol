@@ -8,9 +8,16 @@ import Icon from '../Icon';
 
 const GalleryStyle = styled.div`
   padding: 10px;
+  margin: 0 auto;
   > h2 {
     text-align: center;
-    font-size: 32px;
+    font-size: 28px;
+    margin: 10px;
+  }
+  > h3 {
+    font-size: 14px;
+    text-align: center;
+    color: #808080;
   }
   > button {
     display: block;
@@ -25,57 +32,9 @@ const GalleryStyle = styled.div`
   }
 `;
 
-const ModalStyle = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0, 0.2);
-  padding: 16px;
-  .content {
-    max-width: 768px;
-    margin: 0px auto;
-    background: white;
-    border-radius: 4px;
-    .actions {
-      border-bottom: 1px solid #eaeaea;
-    }
-    .close-modal {
-      display: block;
-      margin: 0;
-      margin-left: auto;
-      padding: 4px;
-      border: none;
-      border-radius: 0;
-      border-bottom: 1px solid transparent;
-      border-left: 1px solid transparent;
-      &:hover {
-        border-color: #ccc;
-      }
-    }
-    img {
-      display: block;
-      margin-bottom: 20px;
-      max-width: 100%;
-    }
-    .inner {
-      padding: 1em;
-      padding-top: 0.5em;
-      max-height: calc(100vh - 100px);
-      overflow: auto;
-      br + p, p:first-child {
-        margin-top: 8px;
-        margin-bottom: 4px;
-      }
-    }
-  }
-`;
-
 class ImageGallery extends Component {
   state = {
     images: [],
-    selectedImage: null,
     loading: true
   }
   _inputNode = null;
@@ -181,37 +140,18 @@ class ImageGallery extends Component {
     })
   }
 
-  openDetails(image) {
-    window.addEventListener('keyup', this.closeDetails);
-    this.setState({selectedImage: {
-      name: image.name,
-      type: image.type.replace('image/', '').toUpperCase(),
-      size: this.parseByteSize(image.size),
-      date: new Date(image.uploadDate).toLocaleDateString(),
-      url: image.downloadUrl
-    }});
-  }
-
-  closeDetails = () => {
-    window.removeEventListener('keyup', this.closeDetails);
-    this.setState({selectedImage: null})
-  }
-
-  parseByteSize(bytes) {
-    if (bytes > (1024 * 1024)) {
-      return `${(bytes / (1024 * 1024)).toFixed(2)} MB`;
+  selectImage(image) {
+    if (typeof this.props.onClick === 'function') {
+      this.props.onClick(image);
     }
-    if (bytes > 1024) {
-      return `${(bytes / 1024).toFixed(2)} KB`;      
-    }
-    return `${bytes} bytes`
   }
 
   render() {
-    const {selectedImage, images, loading} = this.state;
+    const {images, loading} = this.state;
     return (
       <GalleryStyle className="container">
         <h2>Galer&iacute;a de im&aacute;genes</h2>
+        <h3>Por favor, seleccione o suba una imagen</h3>
         <Button onClick={() => this._inputNode && this._inputNode.click()}>
           <Icon icon="cloud_upload" size={16} />
           Subir imagen
@@ -224,40 +164,10 @@ class ImageGallery extends Component {
         {loading ? 'Cargando...' : (
           <ImageGrid 
             images={images}  
-            onClick={img => this.openDetails(img)}
+            onClick={img => this.selectImage(img)}
             onDelete={(img, ev) => this.deleteImage(img, ev)} 
             showDelete />
         )}
-        {selectedImage ? (
-          <ModalStyle onClick={() => this.closeDetails()}>
-            <div className="content">
-              <div className="actions">
-                <Button 
-                  onClick={() => this.closeDetails()}
-                  className="close-modal"
-                  title="Cerrar" 
-                >
-                  <Icon icon="close" size={20} />
-                </Button>
-              </div>
-              <div className="inner">
-                <img src={selectedImage.url} alt={selectedImage.name} />
-                <p><strong>Nombre</strong></p>
-                <p>{selectedImage.name}</p>
-                <br/>
-                <p><strong>Formato</strong></p>
-                <p>{selectedImage.type}</p>
-                <br/>
-                <p><strong>Tamaño</strong></p>
-                <p>{selectedImage.size}</p>
-                <br/>
-                <p><strong>Fecha de subida</strong></p>
-                <p>{selectedImage.date}</p>
-                <br/>
-              </div>
-            </div>
-          </ModalStyle>
-        ) : null}
       </GalleryStyle>
     );
   }

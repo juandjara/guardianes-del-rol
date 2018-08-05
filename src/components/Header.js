@@ -5,6 +5,7 @@ import logo from '../assets/logo-guardianes.png';
 import withAuth from './withAuth'
 import Button from './Button';
 import Icon from './Icon';
+import { Link } from 'react-router-dom';
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -18,6 +19,7 @@ const HeaderStyle = styled.header`
     margin: 4px 0;
     white-space: nowrap;
     font-size: 28px;
+    color: #fafafa;
     .logo {
       height: 60px;
       vertical-align: middle;
@@ -84,10 +86,12 @@ class Header extends Component {
     const user = this.props.user;
     return (
       <HeaderStyle className="App-header">
-        <h1>
-          <img src={logo} className="logo" alt="logo" />
-          Guardianes del Rol
-        </h1>
+        <Link to="/">
+          <h1>
+            <img src={logo} className="logo" alt="logo" />
+            Guardianes del Rol
+          </h1>
+        </Link>
         {user && (<nav className="big-nav">
           <img 
             onClick={() => this.setState(state => ({open: !state.open}))}

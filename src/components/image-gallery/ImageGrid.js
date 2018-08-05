@@ -17,7 +17,10 @@ const GridStyle = styled.div`
       background: white;
       position: relative;
       transition: transform 0.2s;
-      &:hover {
+      cursor: pointer;
+      &:hover, 
+      &:focus, 
+      &:focus-within {
         transform: scale(1.05);
       }
       img {
@@ -65,7 +68,9 @@ const GridStyle = styled.div`
           opacity: 0.2;
         }
       }
-      &:not(.loading):hover {
+      &:not(.loading):hover,
+      &:not(.loading):focus,
+      &:not(.loading):focus-within {
         .actions {
           opacity: 1;
         }
@@ -99,6 +104,7 @@ const ImageGrid = ({images, showDelete, onDelete, onClick}) => {
             const src = img.downloadUrl || img.previewUrl;
             return (
               <div 
+                tabIndex={0}
                 onClick={() => onClick(img)}
                 className={`img-container ${isLoading ? 'loading' : ''}`}
                 key={img.name}>
