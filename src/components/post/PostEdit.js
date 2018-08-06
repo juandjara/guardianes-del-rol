@@ -7,6 +7,7 @@ import slug from 'slugg';
 import Icon from '../Icon';
 import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
+import withAuth from '../withAuth';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -36,6 +37,10 @@ const EditStyle = styled.div`
       }
       &[type=file] {
         display: none;
+      }
+      &[readonly] {
+        opacity: 0.5;
+        border-color: #ccc;
       }
     }
     label {
@@ -74,9 +79,11 @@ class PostEdit extends Component {
     post: {
       id: null,
       title: '',
-      description: { ops: [] },
+      narrator: null,
       date: '',
       hour: '',
+      description: { ops: [] },
+      mainImageUrl: null,
       totalSeats: 0,
       fullSeats: 0
     }
@@ -176,6 +183,8 @@ class PostEdit extends Component {
 
   render() {
     const post = this.state.post;
+    const user = this.props.user;
+    const username = user.customName || user.displayName;
     return (
       <EditStyle className="container">
         <nav>
@@ -213,6 +222,12 @@ class PostEdit extends Component {
                 placeholder="HH:MM"
                 value={post.hour}
                 onChange={ev => this.edit('hour', ev.target.value)} />
+            </div>
+            <div className="form-group">
+              <label htmlFor="narrator">Narrador</label>
+              <input type="text"
+                value={username}
+                readOnly />
             </div>
             <div className="form-group">
               <label>Descripci&oacute;n</label>
@@ -277,4 +292,4 @@ class PostEdit extends Component {
   }
 }
 
-export default PostEdit;
+export default withAuth(PostEdit);

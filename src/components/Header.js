@@ -67,6 +67,7 @@ const MenuStyle = styled.div`
   position: absolute;
   top: 100%;
   right: 0;
+  min-width: 140px;
   text-align: right;
   color: #191919;
   background-color: #fafafa;
@@ -84,6 +85,7 @@ class Header extends Component {
   }
   render() {
     const user = this.props.user;
+    const username = user && (user.customName || user.displayName);
     return (
       <HeaderStyle className="App-header">
         <Link to="/">
@@ -99,7 +101,7 @@ class Header extends Component {
             src={user.photoURL} 
             alt="avatar" />
           <MenuStyle open={this.state.open}>
-            <p style={{margin: 10}}>{user.email}</p>
+            <p style={{whiteSpace: 'nowrap', margin: 10}}>{username}</p>
             <Button
               onClick={() => auth.signOut()}
               style={{marginLeft: 'auto', display: 'block'}}>
