@@ -9,6 +9,7 @@ import withAuth from './auth/withAuth';
 import Header from './Header';
 import NotFound from './NotFound';
 import ImageGallery from './image-gallery/ImageGallery';
+import Profile from './auth/Profile';
 
 const Loading = () => (
   <p style={{margin: '1em', textAlign: 'center'}}>
@@ -31,6 +32,7 @@ class App extends Component {
                 <Route exact path="/category" component={CategoryList} />
                 <Route path="/category/:id" component={CategoryEdit} />
                 <Route path="/gallery" component={ImageGallery} />
+                <Route path="/profile" component={Profile} />
                 <Route component={NotFound} />
               </Switch>
             ) : this.props.loadingAuth ? <Loading /> : <Login />

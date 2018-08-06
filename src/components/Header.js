@@ -32,16 +32,6 @@ const HeaderStyle = styled.header`
   }
   nav {
     position: relative;
-    a {
-      padding: 6px 8px;
-      margin: 0 4px;
-      color: #414141;
-      font-weight: 500;
-      &.active {
-        font-weight: 600;
-        color: rgb(181, 0, 35);
-      }
-    }
     .avatar {
       border-radius: 50%;
       height: 60px;
@@ -76,6 +66,19 @@ const MenuStyle = styled.div`
   padding: 4px;
   margin: 4px;
   margin-top: 8px;
+  .item {
+    margin: 4px;
+    padding: 6px;
+    display: block;
+  }
+  button.item {
+    margin-left: auto;
+    background: transparent;
+    border: none;
+    &:hover, &:focus {
+      color: #666;
+    }
+  }
 `;
 
 class Header extends Component {
@@ -102,9 +105,10 @@ class Header extends Component {
             alt="avatar" />
           <MenuStyle open={this.state.open}>
             <p style={{whiteSpace: 'nowrap', margin: 10}}>{username}</p>
+            <Link className="item" to="/profile">Cuenta</Link>
             <Button
-              onClick={() => auth.signOut()}
-              style={{marginLeft: 'auto', display: 'block'}}>
+              className="item"
+              onClick={() => auth.signOut()}>
               <Icon icon="person_outline" size="1em" style={{marginRight: 4}} />
               Cerrar sesion
             </Button>
