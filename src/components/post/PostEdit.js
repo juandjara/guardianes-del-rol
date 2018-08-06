@@ -7,7 +7,7 @@ import slug from 'slugg';
 import Icon from '../Icon';
 import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
-import withAuth from '../withAuth';
+import withAuth from '../auth/withAuth';
 
 const EditStyle = styled.div`
   padding: 20px 14px;

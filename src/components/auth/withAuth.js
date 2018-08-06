@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { auth, db } from '../firebase';
+import { auth, db } from '../../firebase';
 
 function withAuth(WrappedComponent) {
   const wrappedName = WrappedComponent.displayName || WrappedComponent.name;

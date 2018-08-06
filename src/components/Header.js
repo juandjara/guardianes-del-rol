@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { auth } from '../firebase';
 import styled from 'styled-components';
 import logo from '../assets/logo-guardianes.png';
-import withAuth from './withAuth'
+import withAuth from './auth/withAuth'
 import Button from './Button';
 import Icon from './Icon';
 import { Link } from 'react-router-dom';

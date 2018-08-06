@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import { loginWithGoogle } from '../firebase';
+import { loginWithGoogle } from '../../firebase';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from './Button';
+import Button from '../Button';
 
 const LoginStyle = styled.div`
   text-align: center;

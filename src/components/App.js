@@ -1,11 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { BrowserRouter, Route, Redirect, Switch } from 'react-router-dom';
-import Login from './Login';
+import Login from './auth/Login';
 import PostList from './post/PostList';
 import PostEdit from './post/PostEdit';
 import CategoryList from './category/CategoryList';
 import CategoryEdit from './category/CategoryEdit';
-import withAuth from './withAuth';
+import withAuth from './auth/withAuth';
 import Header from './Header';
 import NotFound from './NotFound';
 import ImageGallery from './image-gallery/ImageGallery';
