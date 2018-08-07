@@ -8,6 +8,7 @@ import Icon from '../Icon';
 import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
 import withAuth from '../auth/withAuth';
+import FormGroup from '../FormGroup';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -20,34 +21,6 @@ const EditStyle = styled.div`
   }
   .back-btn {
     margin: 0;
-  }
-  .form-group {
-    margin-top: 1em;
-    margin-bottom: 2em;
-    input {
-      display: block;
-      width: 100%;
-      padding: 6px 8px;
-      font-size: 1em;
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      &:focus {
-        border-color: dodgerblue;
-      }
-      &[type=file] {
-        display: none;
-      }
-      &[readonly] {
-        opacity: 0.5;
-        border-color: #ccc;
-      }
-    }
-    label {
-      font-size: smaller;
-      display: block;
-      margin-bottom: 4px;
-    }
   }
   > h2 {
     text-align: center;
@@ -202,41 +175,41 @@ class PostEdit extends Component {
         <h2>{post.id ? 'Editar' : 'Nueva'} partida</h2>
         {this.state.loading ? 'Cargando...' : (
           <Fragment>
-            <div className="form-group">
+            <FormGroup>
               <label htmlFor="title">T&iacute;tulo</label>
               <input type="text" 
                 value={post.title}
                 onChange={ev => this.edit('title', ev.target.value)}
               />
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="date">Fecha</label>
               <input type="date" name="date"
                 placeholder="YYYY-MM-DD"
                 value={post.date}
                 onChange={ev => this.edit('date', ev.target.value)} />
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="hour">Hora</label>
               <input type="text" name="hour"
                 placeholder="HH:MM"
                 value={post.hour}
                 onChange={ev => this.edit('hour', ev.target.value)} />
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="narrator">Narrador</label>
               <input type="text"
                 value={username}
                 readOnly />
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label>Descripci&oacute;n</label>
               <Editor
                 value={post.description}
                 onChange={value => this.edit('description', value)}
               />
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label>Imagen de portada</label>
               <Button 
                 className="btn-gallery"
@@ -262,19 +235,19 @@ class PostEdit extends Component {
                 onClickAway={() => this.setState({showImageGallery: false})}>
                 <ImageGallery onClick={img => this.selectImage(img)} />
               </Modal>
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="totalSeats">Plazas totales</label>
               <input type="number"
                 value={post.totalSeats}
                 onChange={ev => this.edit('totalSeats', ev.target.value)} />
-            </div>
-            <div className="form-group">
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="fullSeats">Plazas ocupadas</label>
               <input type="number" name="fullSeats"
                 value={post.fullSeats}
                 onChange={ev => this.edit('fullSeats', ev.target.value)} />
-            </div>
+            </FormGroup>
             <Button main onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />
               Publicar {post.id && 'cambios'}
