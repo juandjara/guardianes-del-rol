@@ -32,7 +32,8 @@ class App extends Component {
                 <Route exact path="/category" component={CategoryList} />
                 <Route path="/category/:id" component={CategoryEdit} />
                 <Route path="/gallery" component={ImageGallery} />
-                <Route path="/profile" component={Profile} />
+                {/* desactivado hasta que se definan los datos de usuario */}        
+                {/* <Route path="/profile" component={Profile} /> */}
                 <Route component={NotFound} />
               </Switch>
             ) : this.props.loadingAuth ? <Loading /> : <Login />
