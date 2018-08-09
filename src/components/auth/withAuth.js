@@ -5,6 +5,7 @@ function withAuth(WrappedComponent) {
   const wrappedName = WrappedComponent.displayName || WrappedComponent.name;
   return class WithAuth extends Component {
     static displayName = `withAuth(${wrappedName})`;
+    unsubcriber = null;
     state = {
       loadingAuth: true,
       user: auth.currentUser
@@ -13,8 +14,14 @@ function withAuth(WrappedComponent) {
       this.listenAuth();
     }
 
+    componentWillUnmount() {
+      if (this.unsubcriber) {
+        this.unsubcriber();
+      }
+    }
+
     listenAuth() {
-      auth.onAuthStateChanged(user => {
+      this.unsubcriber = auth.onAuthStateChanged(user => {
         if (!navigator.onLine || !user) {
           this.setState({
             loadingAuth: false,
@@ -23,9 +30,7 @@ function withAuth(WrappedComponent) {
           return;
         }
         if (user && !this.state.user) {
-          this.setState({user}, () => {
-            this.listenUserDB();
-          })
+          this.setState({loadingAuth: false, user})
         }
       })
     }

@@ -7,7 +7,6 @@ import slug from 'slugg';
 import Icon from '../Icon';
 import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
-import withAuth from '../auth/withAuth';
 import FormGroup from '../FormGroup';
 
 const EditStyle = styled.div`
@@ -265,4 +264,4 @@ class PostEdit extends Component {
   }
 }
 
-export default withAuth(PostEdit);
+export default PostEdit;

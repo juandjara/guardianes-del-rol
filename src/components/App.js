@@ -10,6 +10,7 @@ import Header from './Header';
 import NotFound from './NotFound';
 import ImageGallery from './image-gallery/ImageGallery';
 import Profile from './auth/Profile';
+import ProtectedRoute from './auth/ProtectedRoute';
 
 const Loading = () => (
   <p style={{margin: '1em', textAlign: 'center'}}>
@@ -23,21 +24,20 @@ class App extends Component {
       <BrowserRouter>
         <Fragment>
           <Header />
-          {
-            this.props.user ? (
-              <Switch>
-                <Route exact path="/" render={() => <Redirect to="/post" />} />
-                <Route exact path="/post" component={PostList} />
-                <Route path="/post/:id" component={PostEdit} />
-                <Route exact path="/category" component={CategoryList} />
-                <Route path="/category/:id" component={CategoryEdit} />
-                <Route path="/gallery" component={ImageGallery} />
-                {/* desactivado hasta que se definan los datos de usuario */}        
-                {/* <Route path="/profile" component={Profile} /> */}
-                <Route component={NotFound} />
-              </Switch>
-            ) : this.props.loadingAuth ? <Loading /> : <Login />
-          }
+          {this.props.loadingAuth ? <Loading /> : (
+            <Switch>
+              <Route exact path="/" render={() => <Redirect to="/post" />} />,
+              <Route path="/login" component={Login} />
+              <ProtectedRoute exact path="/post" component={PostList} />,
+              <ProtectedRoute path="/post/:id" component={PostEdit} />,
+              <ProtectedRoute exact path="/category" component={CategoryList} />,
+              <ProtectedRoute path="/category/:id" component={CategoryEdit} />,
+              <ProtectedRoute path="/gallery" component={ImageGallery} />,
+              {/* desactivado hasta que se definan los datos de usuario
+              <Route path="/profile" component={Profile} /> */}
+              <Route component={NotFound} />
+            </Switch>
+          )}
         </Fragment>
       </BrowserRouter>
     );
