@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import { loginWithGoogle, db, auth } from '../../firebase';
+import { db, auth } from '../../firebase';
 import styled from 'styled-components';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
-import { Redirect } from 'react-router-dom';
 import Icon from '../Icon';
 
 const LoginStyle = styled.div`
