@@ -22,11 +22,11 @@ const LoginStyle = styled.div`
     line-height: 18px;
     text-align: center;
     opacity: 0.8;
-    > div {
+    header {
       font-size: 20px;
       margin-bottom: 6px;
     }
-    > .material-icons {
+    .material-icons {
       margin: 0 2px;
     }
   }
@@ -94,8 +94,9 @@ class Login extends Component {
 
   sendSignInMail() {
     const {protocol, host} = window.location;
+    const redirection = this.props.location.state || {next: '/'};
     const config = {
-      url: `${protocol}//${host}/login_callback`,
+      url: `${protocol}//${host}/login_confirm?next=${redirection.next}`,
       handleCodeInApp: true
     };
     auth.sendSignInLinkToEmail(this.state.email, config)
@@ -112,7 +113,7 @@ class Login extends Component {
   render() {
     const {useRedirection, email, mailSent, error, loading} = this.state;
     const mailDomain = email.replace(/^.+@/, '');
-    const redirection = this.props.location.state || {next: {pathname: '/'}};
+    const redirection = this.props.location.state || {next: '/'};
     if (useRedirection) {
       return <Redirect to={redirection.next} />
     }
@@ -122,7 +123,11 @@ class Login extends Component {
         <h2>Bienvenido</h2>
         {mailSent ? (
           <div className="mail-sent">
-            <div>✨<Icon icon="mail" />✨</div>
+            <header>
+              <span role="img" aria-label="sparkle">✨</span>
+              <Icon icon="mail" />
+              <span role="img" aria-label="sparkle">✨</span>          
+            </header>
             <p>
               Se ha enviado un enlace a tu correo.
               <br />

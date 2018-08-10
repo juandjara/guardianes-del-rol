@@ -11,6 +11,7 @@ import NotFound from './NotFound';
 import ImageGallery from './image-gallery/ImageGallery';
 import Profile from './auth/Profile';
 import ProtectedRoute from './auth/ProtectedRoute';
+import LoginConfirm from './auth/LoginConfirm';
 
 const Loading = () => (
   <p style={{margin: '1em', textAlign: 'center'}}>
@@ -28,6 +29,7 @@ class App extends Component {
             <Switch>
               <Route exact path="/" render={() => <Redirect to="/post" />} />,
               <Route path="/login" component={Login} />
+              <Route path="/login_confirm" component={LoginConfirm} />
               <ProtectedRoute exact path="/post" component={PostList} />,
               <ProtectedRoute path="/post/:id" component={PostEdit} />,
               <ProtectedRoute exact path="/category" component={CategoryList} />,

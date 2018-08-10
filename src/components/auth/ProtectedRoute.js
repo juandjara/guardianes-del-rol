@@ -8,7 +8,7 @@ const ProtectedRoute = ({ component: Component, ...props }) => (
       ? <Component {...routeProps} {...props} />
       : <Redirect to={{
           pathname: '/login',
-          state: { next: routeProps.location }
+          state: { next: routeProps.location.pathname }
         }} />
   )} />
 )
