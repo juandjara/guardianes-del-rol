@@ -112,7 +112,6 @@ class ImageGallery extends Component {
       () => {
         uploadTask.snapshot.ref.getDownloadURL()
         .then(url => {
-          console.log('file availble at: ', url);
           image.downloadUrl = url;
           db.collection('images').doc(image.name).set({
             name: image.name,
@@ -167,7 +166,8 @@ class ImageGallery extends Component {
           Subir imagen
         </Button>
         <input 
-          type="file" 
+          type="file"
+          multiple
           accept="image/jpeg,image/png,image/gif"
           onChange={ev => this.parseFileEvent(ev.target.files)}
           ref={node => { this._inputNode = node; }} />
