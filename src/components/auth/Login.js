@@ -48,24 +48,8 @@ class Login extends Component {
   state = {
     email: '',
     error: null,
-    useRedirection: false,
     mailSent: false,
     loading: false
-  }
-
-  googleLogin() {
-    loginWithGoogle()
-    .then(() => {
-      this.setState({useRedirection: true})
-    })
-    .catch(err => {
-      console.error(
-        'Login error with code',
-        err.code,
-        'and message',
-        err.message
-      )
-    })
   }
 
   checkWhitelist(email) {
@@ -111,12 +95,8 @@ class Login extends Component {
   }
 
   render() {
-    const {useRedirection, email, mailSent, error, loading} = this.state;
+    const {email, mailSent, error, loading} = this.state;
     const mailDomain = email.replace(/^.+@/, '');
-    const redirection = this.props.location.state || {next: '/'};
-    if (useRedirection) {
-      return <Redirect to={redirection.next} />
-    }
 
     return (
       <LoginStyle className="container">
@@ -157,9 +137,6 @@ class Login extends Component {
             </Button>
           </form>
         )}
-        <Button onClick={() => this.googleLogin()}>
-          Google Login
-        </Button> 
       </LoginStyle>
     )
   }

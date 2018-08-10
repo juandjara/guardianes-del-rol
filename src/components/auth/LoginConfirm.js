@@ -48,7 +48,7 @@ class LoginConfirm extends Component {
     })
     .catch((err) => {
       console.error(err);
-      this.setState({error: err})
+      this.setState({error: err.message})
     })
   }
   render() {
