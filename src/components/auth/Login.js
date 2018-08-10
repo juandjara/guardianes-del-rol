@@ -19,6 +19,7 @@ const LoginStyle = styled.div`
 class Login extends Component {
   state = {
     email: '',
+    error: null,
     useRedirection: false
   }
 
@@ -26,7 +27,6 @@ class Login extends Component {
     loginWithGoogle()
     .then(() => {
       this.setState({useRedirection: true})
-      //this.props.history.push('/')
     })
     .catch(err => {
       console.error(
@@ -39,18 +39,32 @@ class Login extends Component {
   }
 
   checkWhitelist(email) {
-    db.collection('users')
+    return db.collection('users')
     .doc(email)
     .get()
     .then(ref => {
       if (!ref.exists) {
-        return Promise.reject(`El email ${email} no está en la lista de invitados`);
+        const err = new Error(`El email ${email} no está en la lista de invitados`);
+        return Promise.reject(err);
       }
     })
   }
 
+  checkMail(ev) {
+    ev.preventDefault();
+    this.checkWhitelist(this.state.email)
+    .then(() => {
+      window.alert('all right')
+      // send login link
+      // show indication for login link
+    })
+    .catch(err => {
+      this.setState({error: err.message})
+    })
+  }
+
   render() {
-    const useRedirection = this.state.useRedirection;
+    const {useRedirection, email, error} = this.state;
     const redirection = this.props.location.state || {next: {pathname: '/'}};
     if (useRedirection) {
       return <Redirect to={redirection.next} />
@@ -62,10 +76,14 @@ class Login extends Component {
         <Button onClick={() => this.googleLogin()}>
           Google Login
         </Button>
-        <form>
-          <FormGroup style={{marginBottom: 10}}>
+        <form onSubmit={ev => this.checkMail(ev)}>
+          <FormGroup error={!!error} style={{marginBottom: 10}}>
             <label htmlFor="email">Introduce tu email para continuar</label>
-            <input type="email" name="email" placeholder="Email" />
+            <input type="email" name="email" required
+              placeholder="Email"
+              value={email}
+              onChange={ev => this.setState({email: ev.target.value})} />
+            <div className="error">{error}</div>
           </FormGroup>
           <Button type="submit" main>Continuar</Button>
         </form>

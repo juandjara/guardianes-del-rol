@@ -21,11 +21,17 @@ const FormGroup = styled.div`
       opacity: 0.5;
       border-color: #ccc;
     }
+    ${props => props.error ? 'border-color: red;' : ''}
   }
   label {
     font-size: smaller;
     display: block;
     margin-bottom: 4px;
+  }
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 4px;
   }
 `;
 
