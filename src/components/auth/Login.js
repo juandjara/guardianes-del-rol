@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
-import { loginWithGoogle, db } from '../../firebase';
+import { loginWithGoogle, db, auth } from '../../firebase';
 import styled from 'styled-components';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
 import { Redirect } from 'react-router-dom';
+import Icon from '../Icon';
 
 const LoginStyle = styled.div`
   padding: 8px;
@@ -14,13 +15,28 @@ const LoginStyle = styled.div`
   button {
     margin-left: 0;
   }
+  .mail-sent {
+    font-size: 14px;
+    line-height: 18px;
+    text-align: center;
+    opacity: 0.8;
+    > div {
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+    > .material-icons {
+      margin: 0 2px;
+    }
+  }
 `;
 
 class Login extends Component {
   state = {
     email: '',
     error: null,
-    useRedirection: false
+    useRedirection: false,
+    mailSent: false,
+    loading: false
   }
 
   googleLogin() {
@@ -52,19 +68,36 @@ class Login extends Component {
 
   checkMail(ev) {
     ev.preventDefault();
+    this.setState({loading: true});
     this.checkWhitelist(this.state.email)
     .then(() => {
-      window.alert('all right')
-      // send login link
-      // show indication for login link
+      this.sendSignInMail();
     })
     .catch(err => {
-      this.setState({error: err.message})
+      this.setState({loading: false, error: err.message})
+    })
+  }
+
+  sendSignInMail() {
+    const {protocol, host} = window.location;
+    const config = {
+      url: `${protocol}//${host}/login_callback`,
+      handleCodeInApp: true
+    };
+    auth.sendSignInLinkToEmail(this.state.email, config)
+    .then(() => {
+      window.localStorage.setItem('tempLoginEmail', this.state.email);
+      this.setState({loading: false, mailSent: true})
+    })
+    .catch(err => {
+      console.error(err);
+      this.setState({loading: false, error: err.message});
     })
   }
 
   render() {
-    const {useRedirection, email, error} = this.state;
+    const {useRedirection, email, mailSent, error} = this.state;
+    const mailDomain = email.replace(/^.+@/, '');
     const redirection = this.props.location.state || {next: {pathname: '/'}};
     if (useRedirection) {
       return <Redirect to={redirection.next} />
@@ -73,20 +106,34 @@ class Login extends Component {
     return (
       <LoginStyle className="container">
         <h2>Bienvenido</h2>
+        {mailSent ? (
+          <div className="mail-sent">
+            <div>✨<Icon icon="mail" />✨</div>
+            <p>
+              Se ha enviado un enlace a tu correo.
+              <br />
+              Pulsalo para iniciar sesión.
+            </p>
+            <a href={`http://${mailDomain}`}>
+              <Button>Abrir {mailDomain}</Button>
+            </a>
+          </div>
+        ) : (
+          <form onSubmit={ev => this.checkMail(ev)}>
+            <FormGroup error={!!error} style={{marginBottom: 10}}>
+              <label htmlFor="email">Introduce tu email para continuar</label>
+              <input type="email" name="email" required
+                placeholder="Email"
+                value={email}
+                onChange={ev => this.setState({email: ev.target.value})} />
+              <div className="error">{error}</div>
+            </FormGroup>
+            <Button type="submit" main>Continuar</Button>
+          </form>
+        )}
         <Button onClick={() => this.googleLogin()}>
           Google Login
-        </Button>
-        <form onSubmit={ev => this.checkMail(ev)}>
-          <FormGroup error={!!error} style={{marginBottom: 10}}>
-            <label htmlFor="email">Introduce tu email para continuar</label>
-            <input type="email" name="email" required
-              placeholder="Email"
-              value={email}
-              onChange={ev => this.setState({email: ev.target.value})} />
-            <div className="error">{error}</div>
-          </FormGroup>
-          <Button type="submit" main>Continuar</Button>
-        </form>
+        </Button> 
       </LoginStyle>
     )
   }
