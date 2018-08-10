@@ -15,6 +15,10 @@ const Button = styled.button`
   &:focus {
     background: ${props => props.main ? 'deepskyblue' : '#f4f4f4'};
   }
+  ${props => props.disabled ? `
+    opacity: 0.5;
+    pointer-events: none;
+  ` : ''}
 `;
 
 export default Button;

@@ -12,8 +12,10 @@ const LoginStyle = styled.div`
   h2 {
     text-align: center;
   }
-  button {
-    margin-left: 0;
+  form {
+    button {
+      margin-left: 0;
+    }
   }
   .mail-sent {
     font-size: 14px;
@@ -26,6 +28,18 @@ const LoginStyle = styled.div`
     }
     > .material-icons {
       margin: 0 2px;
+    }
+  }
+  .spin {
+    animation: spin 2s infinite;
+  }
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
 `;
@@ -96,7 +110,7 @@ class Login extends Component {
   }
 
   render() {
-    const {useRedirection, email, mailSent, error} = this.state;
+    const {useRedirection, email, mailSent, error, loading} = this.state;
     const mailDomain = email.replace(/^.+@/, '');
     const redirection = this.props.location.state || {next: {pathname: '/'}};
     if (useRedirection) {
@@ -128,7 +142,14 @@ class Login extends Component {
                 onChange={ev => this.setState({email: ev.target.value})} />
               <div className="error">{error}</div>
             </FormGroup>
-            <Button type="submit" main>Continuar</Button>
+            <Button type="submit" disabled={loading} main>
+              {loading ? (
+                <span>
+                  Cargando...
+                  <Icon icon="autorenew" className="spin" />
+                </span>
+              ) : 'Continuar'}
+            </Button>
           </form>
         )}
         <Button onClick={() => this.googleLogin()}>
