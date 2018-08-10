@@ -17,7 +17,7 @@ const HeaderStyle = styled.header`
   color: #fafafa;
   h1 {
     font-weight: normal;
-    margin: 4px 0;
+    margin: 0;
     white-space: nowrap;
     font-size: 28px;
     color: #fafafa;
@@ -34,6 +34,7 @@ const HeaderStyle = styled.header`
   nav {
     position: relative;
     .avatar {
+      cursor: pointer;
       border-radius: 50%;
       height: 52px;
       vertical-align: middle;
@@ -59,8 +60,7 @@ const MenuStyle = styled.div`
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 4px;
-  margin: 4px;
-  margin-top: 8px;
+  margin: 8px;
   .item {
     margin: 4px;
     padding: 6px;
@@ -77,13 +77,25 @@ const MenuStyle = styled.div`
 `;
 
 class Header extends Component {
+  dialogNode = null;
   state = { open: false }
-  toggle() {
-    this.setState(state => ({open: !state.open}));
+  openDropdown() {
+    this.setState({open: true})
+    window.addEventListener('click', this.closeDropdown);
+  }
+  closeDropdown = (ev) => {
+    if (
+      this.dialogNode && 
+      this.dialogNode.contains(ev.target)
+    ) {
+      return;
+    } 
+    this.setState({open: false})
+    window.removeEventListener('click', this.closeDropdown)
   }
   render() {
     const user = this.props.user;
-    const username = user && (user.customName || user.displayName);
+    const username = user && (user.customName || user.displayName || user.email);
     return (
       <HeaderStyle className="App-header">
         <Link to="/">
@@ -92,11 +104,11 @@ class Header extends Component {
             Guardianes del Rol
           </h1>
         </Link>
-        {user && (<nav className="big-nav">
+        {user && (<nav ref={node => {this.dialogNode = node}}>
           <img 
-            onClick={() => this.setState(state => ({open: !state.open}))}
-            className="avatar" 
+            onClick={() => this.openDropdown()}
             src={user.photoURL || defaultAvatar} 
+            className="avatar" 
             alt="avatar" />
           <MenuStyle open={this.state.open}>
             <p style={{whiteSpace: 'nowrap', margin: 10}}>{username}</p>
