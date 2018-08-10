@@ -6,6 +6,7 @@ import withAuth from './auth/withAuth'
 import Button from './Button';
 import Icon from './Icon';
 import { Link } from 'react-router-dom';
+import defaultAvatar from '../assets/default-avatar.svg';
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -21,9 +22,9 @@ const HeaderStyle = styled.header`
     font-size: 28px;
     color: #fafafa;
     .logo {
-      height: 60px;
+      height: 52px;
       vertical-align: middle;
-      margin: 0 8px;
+      margin: 4px 8px;
     }
   }
   .material-icons {
@@ -34,20 +35,14 @@ const HeaderStyle = styled.header`
     position: relative;
     .avatar {
       border-radius: 50%;
-      height: 60px;
+      height: 52px;
       vertical-align: middle;
-      padding: 0 8px;
+      margin: 4px 8px;
     }
   }
   @media (max-width: 600px) {
     h1 {
       font-size: 20px;
-      .logo {
-        height: 50px;
-      }
-    }
-    nav .avatar {
-      height: 50px;
     }
   }
 `;
@@ -101,7 +96,7 @@ class Header extends Component {
           <img 
             onClick={() => this.setState(state => ({open: !state.open}))}
             className="avatar" 
-            src={user.photoURL} 
+            src={user.photoURL || defaultAvatar} 
             alt="avatar" />
           <MenuStyle open={this.state.open}>
             <p style={{whiteSpace: 'nowrap', margin: 10}}>{username}</p>
