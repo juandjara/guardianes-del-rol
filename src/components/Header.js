@@ -48,7 +48,7 @@ const HeaderStyle = styled.header`
   }
 `;
 
-const MenuStyle = styled.div`
+const DialogStyle = styled.div`
   display: ${props => props.open ? 'block': 'none'};
   position: absolute;
   top: 100%;
@@ -110,7 +110,7 @@ class Header extends Component {
             src={user.photoURL || defaultAvatar} 
             className="avatar" 
             alt="avatar" />
-          <MenuStyle open={this.state.open}>
+          <DialogStyle open={this.state.open}>
             <p style={{whiteSpace: 'nowrap', margin: 10}}>{username}</p>
             <Link className="item" to="/profile">Cuenta</Link>
             <Button
@@ -119,7 +119,7 @@ class Header extends Component {
               <Icon icon="person_outline" size="1em" style={{marginRight: 4}} />
               Cerrar sesion
             </Button>
-          </MenuStyle>
+          </DialogStyle>
         </nav>)}
       </HeaderStyle>
     );
