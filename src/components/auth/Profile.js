@@ -3,10 +3,15 @@ import styled from 'styled-components';
 import Button from '../Button';
 import Icon from '../Icon';
 import FormGroup from '../FormGroup';
+import { db } from '../../firebase';
 
 const ProfileStyle = styled.div`
   padding: 16px;
+  .back-btn {
+    margin: 0;
+  }
   h2 {
+    margin-top: 6px;
     text-align: center;
   }
   .material-icons {
@@ -32,6 +37,9 @@ const ProfileStyle = styled.div`
 `;
 
 class Profile extends Component {
+  state = {
+    name: ''
+  }
   goBack() {
     this.props.history.goBack();
   }
@@ -45,20 +53,12 @@ class Profile extends Component {
         <h2>Cuenta</h2>       
         <FormGroup>
           <label htmlFor="name">Nombre</label>
-          <div className="radio">
-            <input type="radio" id="useGoogleName" />
-            <label htmlFor="useGoogleName">Por defecto de google</label>
-          </div>
-          <div className="radio">
-            <input type="radio" id="useCustomName" />
-            <label htmlFor="useCustomName">Personalizado</label>
-          </div>
-          <input type="text" id="name" value="nombre" />
+          <input type="text" id="name"
+            value={this.state.name}
+            onChange={ev => this.setState({name: ev.target.value})} />
         </FormGroup>
         <FormGroup>
-          <label htmlFor="">Avatar</label>
-          <input type="radio"/>
-          <input type="radio"/>
+          <label htmlFor="avatar">Avatar</label>
         </FormGroup>
       </ProfileStyle>
     );
