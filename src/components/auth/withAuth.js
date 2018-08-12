@@ -30,7 +30,9 @@ function withAuth(WrappedComponent) {
           return;
         }
         if (user && !this.state.user) {
-          this.setState({loadingAuth: false, user})
+          this.setState({user}, () => {
+            this.listenUserDB();
+          })
         }
       })
     }
@@ -41,10 +43,6 @@ function withAuth(WrappedComponent) {
       .doc(user.email)
       .onSnapshot(
         (snapshot) => {
-          if (!snapshot.exists) {
-            auth.signOut()
-            window.alert('Este usuario no está en la lista de invitados')
-          }
           this.setState({
             loadingAuth: false,
             user: snapshot.empty ? null : {...user, ...snapshot.data()}
