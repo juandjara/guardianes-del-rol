@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
 import Icon from '../Icon';
+import withAuth from './withAuth';
+import {Redirect} from 'react-router-dom';
 
 const LoginStyle = styled.div`
   padding: 8px;
@@ -84,8 +86,10 @@ class Login extends Component {
   render() {
     const {email, mailSent, error, loading} = this.state;
     const mailDomain = email.replace(/^.+@/, '');
+    const redirection = this.props.location.state || {next: '/'};
+    const user = this.props.user;
 
-    return (
+    return user ? <Redirect to={redirection.next} /> : (
       <LoginStyle className="container">
         <h2>Bienvenido</h2>
         {mailSent ? (
@@ -130,5 +134,5 @@ class Login extends Component {
 
 }
 
-export default Login;
+export default withAuth(Login);
 
