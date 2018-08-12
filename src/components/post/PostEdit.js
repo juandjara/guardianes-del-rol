@@ -91,10 +91,12 @@ class PostEdit extends Component {
 
   save() {
     const id = this.state.post.id;
+    const {displayName, email} = this.props.user;
     const post = {
       ...this.state.post,
       description: JSON.stringify(this.state.post.description),
-      slug: slug(this.state.post.title)
+      slug: slug(this.state.post.title),
+      narrator: displayName || email
     }
     const promise = id ? this.update(id, post) : this.create(post);
     promise.then(() => {
@@ -158,8 +160,8 @@ class PostEdit extends Component {
 
   render() {
     const post = this.state.post;
-    const user = this.props.user;
-    const username = user.displayName || user.email;
+    const {displayName, email} = this.props.user;
+    const username = displayName || email;
     return (
       <EditStyle className="container">
         <nav>
