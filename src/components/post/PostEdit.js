@@ -156,7 +156,7 @@ class PostEdit extends Component {
   render() {
     const post = this.state.post;
     const user = this.props.user;
-    const username = user.customName || user.displayName;
+    const username = user.name || user.email;
     return (
       <EditStyle className="container">
         <nav>
