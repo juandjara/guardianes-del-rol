@@ -59,7 +59,6 @@ const DialogStyle = styled.div`
   background-color: #fafafa;
   border: 1px solid #ccc;
   border-radius: 4px;
-  padding: 4px;
   margin: 8px;
   .item {
     margin: 4px;
@@ -73,6 +72,13 @@ const DialogStyle = styled.div`
     &:hover, &:focus {
       color: #666;
     }
+  }
+  .name {
+    white-space: nowrap;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    padding: 4px 10px;
+    border-bottom: 1px solid #ccc;
   }
 `;
 
@@ -95,7 +101,7 @@ class Header extends Component {
   }
   render() {
     const user = this.props.user;
-    const username = user && (user.customName || user.displayName || user.email);
+    const username = user && (user.name || user.email);
     return (
       <HeaderStyle className="App-header">
         <Link to="/">
@@ -111,7 +117,7 @@ class Header extends Component {
             className="avatar" 
             alt="avatar" />
           <DialogStyle open={this.state.open}>
-            <p style={{whiteSpace: 'nowrap', margin: 10}}>{username}</p>
+            <p className="name">{username}</p>
             <Link className="item" to="/profile">Cuenta</Link>
             <Button
               className="item"
