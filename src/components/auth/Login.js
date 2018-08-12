@@ -29,18 +29,6 @@ const LoginStyle = styled.div`
       margin: 0 2px;
     }
   }
-  .spin {
-    animation: spin 2s infinite;
-  }
-
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
 `;
 
 class Login extends Component {

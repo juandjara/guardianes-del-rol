@@ -6,7 +6,7 @@ import withAuth from './auth/withAuth'
 import Button from './Button';
 import Icon from './Icon';
 import { Link } from 'react-router-dom';
-import defaultAvatar from '../assets/default-avatar.svg';
+import defaultAvatar from '../assets/default-avatar-white.svg';
 
 const HeaderStyle = styled.header`
   display: flex;
@@ -101,7 +101,7 @@ class Header extends Component {
   }
   render() {
     const user = this.props.user;
-    const username = user && (user.name || user.email);
+    const username = user && (user.displayName || user.email);
     return (
       <HeaderStyle className="App-header">
         <Link to="/">

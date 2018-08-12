@@ -15,7 +15,7 @@ import LoginConfirm from './auth/LoginConfirm';
 
 const Loading = () => (
   <p style={{margin: '1em', textAlign: 'center'}}>
-    Cargando panel de control
+    Iniciando sesión
   </p>
 )
 

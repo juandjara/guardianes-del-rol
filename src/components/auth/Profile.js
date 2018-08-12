@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import Button from '../Button';
 import Icon from '../Icon';
 import FormGroup from '../FormGroup';
-import { db } from '../../firebase';
+import { db, storage } from '../../firebase';
+import defaultAvatar from '../../assets/default-avatar-black.svg';
+import slugg from 'slugg';
 
 const ProfileStyle = styled.div`
   padding: 16px;
@@ -37,43 +39,155 @@ const ProfileStyle = styled.div`
       display: inline-block;
     }
   }
+  .preview {
+    font-size: 14px;
+    .preview-card {
+      display: flex;
+      align-items: center;
+      margin-top: 4px;
+      background: #f2f2f7;
+      border-radius: 4px;
+      img {
+        height: 40px;
+        margin: 4px;
+        border-radius: 50%;
+      }
+    }
+  }
+  .avatar {
+    display: block;
+    height: 100px;
+  }
 `;
 
 class Profile extends Component {
+  fileInputNode = null;
   state = {
-    name: this.props.user.name
+    loading: false,
+    name: this.props.user.displayName || '',
+    avatar: this.props.user.photoURL || defaultAvatar,
+    avatarFile: null
   }
   goBack() {
     this.props.history.goBack();
   }
   save(ev) {
     ev.preventDefault();
-    db.collection('users')
-    .doc(this.props.user.email)
-    .update({name: this.state.name})
+    this.setState({loading: true})
+
+    const oldAvatarRef = this.props.user.avatarRef;
+    let avatarRef = null;
+    let promise = Promise.resolve();
+    if (this.state.avatarFile) {
+      const file = this.state.avatarFile;
+      const now = Date.now();
+      const metadata = {contentType: file.type}
+      avatarRef = `profiles/${now}_${slugg(file.name)}`;
+      promise = storage.child(avatarRef).put(file, metadata)
+      .then(snapshot => snapshot.ref.getDownloadURL())
+    } else if (oldAvatarRef) {
+      promise = storage.child(oldAvatarRef).delete()
+    }
+
+    promise.then(url => {
+      return db.collection('users')
+      .doc(this.props.user.email)
+      .update({
+        avatarRef,
+        photoURL: url || null,
+        displayName: this.state.name
+      })
+    })
     .then(() => {
-      console.log('update ok')
+      this.setState({loading: false});
+      window.alert('Guardado con exito');
     })
     .catch(err => {
+      this.setState({loading: false});
       console.error('update error', err);
+      window.alert('Algo ha fallado :c');
+    })
+  }
+  parseFiles(files) {
+    const file = files[0];
+    if (!file) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.addEventListener('load', () => {
+      this.setState({avatarFile: file, avatar: reader.result});
+    }, false)
+    reader.readAsDataURL(file);
+  }
+  openFileInput() {
+    if (this.fileInputNode) {
+      this.fileInputNode.click();
+    }
+  }
+  resetAvatar() {
+    this.setState({
+      avatar: defaultAvatar,
+      avatarFile: null
     })
   }
   render() {
+    const {name, avatar, loading} = this.state;
     return (
       <ProfileStyle className="container">
         <Button className="back-btn" onClick={() => this.goBack()}>
           <Icon icon="arrow_back" size="1em" />
           Volver
         </Button>
-        <h2>Cuenta</h2>       
+        <h2>Cuenta</h2>
+        <div className="preview">
+          Asi te ver&aacute;n otros usuarios:
+          <div className="preview-card">
+            <img src={avatar} alt="avatar" />
+            <span>{name || this.props.user.email}</span>
+          </div>
+        </div>   
         <form onSubmit={ev => this.save(ev)}>
           <FormGroup>
-            <label htmlFor="name">Nombre</label>
+            <label htmlFor="name">
+              Nombre
+              <span style={{color: '#666', marginLeft: 4}}>
+                (si se deja en blanco se usara el email)
+              </span>
+            </label>
             <input type="text" id="name"
+              placeholder=""
               value={this.state.name}
               onChange={ev => this.setState({name: ev.target.value})} />
           </FormGroup>
-          <Button type="submit" main>Guardar</Button>
+          <FormGroup>
+            <label htmlFor="avatar">Avatar</label>
+            <input type="file"
+              accept="image/jpeg,image/png,image/gif"
+              onChange={ev => this.parseFiles(ev.target.files)}
+              ref={node => { this.fileInputNode = node; }} />
+            <img 
+              src={this.state.avatar}
+              alt="imagen seleccionada"
+              className="avatar" />
+            <Button type="button" onClick={() => this.openFileInput()}>
+              <Icon icon="cloud_upload" size="1em" />
+              Subir imagen
+            </Button>
+            {this.state.avatar !== defaultAvatar && (
+              <Button type="button" onClick={() => this.resetAvatar()}>
+                <Icon icon="close" size="1em" />
+                Descartar imagen
+              </Button>
+            )}
+          </FormGroup>
+          <Button type="submit" disabled={loading} main>
+            {loading ? (
+              <span>
+                Guardando...
+                <Icon icon="autorenew" className="spin" />
+              </span>
+            ) : 'Guardar'}
+          </Button>
         </form>
       </ProfileStyle>
     );

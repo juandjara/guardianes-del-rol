@@ -159,7 +159,7 @@ class PostEdit extends Component {
   render() {
     const post = this.state.post;
     const user = this.props.user;
-    const username = user.name || user.email;
+    const username = user.displayName || user.email;
     return (
       <EditStyle className="container">
         <nav>
@@ -229,8 +229,7 @@ class PostEdit extends Component {
                 <img 
                   src={post.mainImageUrl}
                   alt="imagen seleccionada"
-                  className="selected-image"
-                  style={{marginTop: 8, maxHeight: 150, display: 'block'}} />
+                  className="selected-image" />
               )}
               <Modal 
                 visible={this.state.showImageGallery}
