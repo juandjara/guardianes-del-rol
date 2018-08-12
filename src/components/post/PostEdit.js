@@ -42,6 +42,9 @@ const EditStyle = styled.div`
     max-height: 150px;
     display: block;
   }
+  .save-btn {
+    margin-left: 0;
+  }
 `;
 
 class PostEdit extends Component {
@@ -247,7 +250,7 @@ class PostEdit extends Component {
                 value={post.fullSeats}
                 onChange={ev => this.edit('fullSeats', ev.target.value)} />
             </FormGroup>
-            <Button main onClick={() => this.save()}>
+            <Button main className="save-btn" onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />
               Publicar {post.id && 'cambios'}
             </Button>

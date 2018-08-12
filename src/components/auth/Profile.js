@@ -7,6 +7,9 @@ import { db } from '../../firebase';
 
 const ProfileStyle = styled.div`
   padding: 16px;
+  button {
+    margin-left: 0;
+  }
   .back-btn {
     margin: 0;
   }
@@ -38,10 +41,22 @@ const ProfileStyle = styled.div`
 
 class Profile extends Component {
   state = {
-    name: ''
+    name: this.props.user.name
   }
   goBack() {
     this.props.history.goBack();
+  }
+  save(ev) {
+    ev.preventDefault();
+    db.collection('users')
+    .doc(this.props.user.email)
+    .update({name: this.state.name})
+    .then(() => {
+      console.log('update ok')
+    })
+    .catch(err => {
+      console.error('update error', err);
+    })
   }
   render() {
     return (
@@ -51,15 +66,15 @@ class Profile extends Component {
           Volver
         </Button>
         <h2>Cuenta</h2>       
-        <FormGroup>
-          <label htmlFor="name">Nombre</label>
-          <input type="text" id="name"
-            value={this.state.name}
-            onChange={ev => this.setState({name: ev.target.value})} />
-        </FormGroup>
-        <FormGroup>
-          <label htmlFor="avatar">Avatar</label>
-        </FormGroup>
+        <form onSubmit={ev => this.save(ev)}>
+          <FormGroup>
+            <label htmlFor="name">Nombre</label>
+            <input type="text" id="name"
+              value={this.state.name}
+              onChange={ev => this.setState({name: ev.target.value})} />
+          </FormGroup>
+          <Button type="submit" main>Guardar</Button>
+        </form>
       </ProfileStyle>
     );
   }
