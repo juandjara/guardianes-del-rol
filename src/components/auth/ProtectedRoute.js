@@ -1,11 +1,11 @@
 import React from 'react';
-import withAuth from './withAuth';
+// import withAuth from './withAuth';
 import { Route, Redirect } from 'react-router-dom';
 
 const ProtectedRoute = ({ component: Component, ...props }) => (
   <Route {...props} render={(routeProps) => (
     !!props.user
-      ? <Component {...routeProps} {...props} />
+      ? <Component {...routeProps} user={props.user} />
       : <Redirect to={{
           pathname: '/login',
           state: { next: routeProps.location.pathname }
@@ -13,4 +13,4 @@ const ProtectedRoute = ({ component: Component, ...props }) => (
   )} />
 )
 
-export default withAuth(ProtectedRoute);
+export default (ProtectedRoute);
