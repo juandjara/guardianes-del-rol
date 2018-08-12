@@ -19,13 +19,26 @@ const PostListStyle = styled.div`
       margin-bottom: 2px;
     }
   }
-  ul {
-    li {
-      margin: 8px;
-    }
-  }
   .material-icons {
     margin-right: 4px;
+  }
+`;
+
+const PostDetails = styled.li`
+  margin-top: 8px;
+  padding: 8px;
+  > div {
+    display: flex;
+    align-items: flex-end;
+    margin-bottom: 12px; 
+  }
+  img {
+    margin-right: 12px;
+    height: 100px;
+  }
+  p {
+    font-size: 14px;
+    margin-top: .5em;
   }
 `;
 
@@ -57,9 +70,17 @@ class PostList extends Component {
         {this.state.loading ? 'Cargando...' : (
           <ul>
             {this.state.posts.map(post => (
-              <li key={post.id}>
+              <PostDetails key={post.id}>
+                <div>
+                  <img src={post.mainImageUrl} alt="Imagen de portada" />
+                  <div>
+                    <p>Fecha: {post.date} {post.hour}</p>
+                    <p>Narrador: {post.narrator}</p>
+                    <p>Plazas: {post.fullSeats} / {post.totalSeats}</p>
+                  </div>
+                </div>
                 <Link to={`/post/${post.id}`}>{post.title}</Link>
-              </li>
+              </PostDetails>
             ))}
           </ul>
         )}
