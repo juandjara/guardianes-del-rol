@@ -8,6 +8,7 @@ import Icon from '../Icon';
 import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
 import FormGroup from '../FormGroup';
+import { Link } from 'react-router-dom';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -170,10 +171,10 @@ class PostEdit extends Component {
             Volver
           </Button>
           {post.id ? (
-            <a href={`https://guardianes.now.sh/post/${post.slug}`}>
+            <Link to={`/post/${post.id}`}>
               <Icon icon="public" size="1em" />
               Ver publicaci&oacute;n
-            </a>
+            </Link>
           ) : null}
         </nav>
         <h2>{post.id ? 'Editar' : 'Nueva'} partida</h2>

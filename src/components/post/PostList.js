@@ -62,7 +62,7 @@ class PostList extends Component {
     return (
       <PostListStyle className="container">
         <h2>Partidas</h2>
-        <Link to="/post/new">
+        <Link to="/post/new/edit">
           <Button>
             <Icon icon="create" size="1em" />
             Nueva partida
@@ -85,7 +85,7 @@ class PostList extends Component {
                     </p>
                     <p>
                       <strong>Plazas:</strong>
-                      {post.fullSeats} / {post.totalSeats}
+                      {' '}{post.fullSeats} / {post.totalSeats}
                     </p>
                   </div>
                 </div>
