@@ -34,10 +34,11 @@ const PostDetails = styled.li`
   }
   img {
     margin-right: 12px;
-    height: 100px;
+    max-width: 150px;
   }
   p {
     font-size: 14px;
+    line-height: 16px;
     margin-top: .5em;
   }
 `;
@@ -74,9 +75,18 @@ class PostList extends Component {
                 <div>
                   <img src={post.mainImageUrl} alt="Imagen de portada" />
                   <div>
-                    <p>Fecha: {post.date} {post.hour}</p>
-                    <p>Narrador: {post.narrator}</p>
-                    <p>Plazas: {post.fullSeats} / {post.totalSeats}</p>
+                    <p>
+                      <strong>Fecha:</strong> 
+                      <br /> {post.date} {post.hour}
+                    </p>
+                    <p>
+                      <strong>Narrador:</strong> 
+                      <br /> {post.narrator}
+                    </p>
+                    <p>
+                      <strong>Plazas:</strong>
+                      {post.fullSeats} / {post.totalSeats}
+                    </p>
                   </div>
                 </div>
                 <Link to={`/post/${post.id}`}>{post.title}</Link>
