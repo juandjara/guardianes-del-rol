@@ -26,9 +26,9 @@ const Routes = props => props.loadingAuth ? <Loading /> : (
     <Route path="/login_confirm" component={LoginConfirm} />
     <ProtectedRoute user={props.user} exact path="/post" component={PostList} />,
     <ProtectedRoute user={props.user} path="/post/:id" component={PostEdit} />,
-    <ProtectedRoute user={props.user} exact path="/category" component={CategoryList} />,
-    <ProtectedRoute user={props.user} path="/category/:id" component={CategoryEdit} />,
-    <ProtectedRoute user={props.user} path="/gallery" component={ImageGallery} />,
+    {/* <ProtectedRoute user={props.user} exact path="/category" component={CategoryList} />, */}
+    {/* <ProtectedRoute user={props.user} path="/category/:id" component={CategoryEdit} />, */}
+    {/* <ProtectedRoute user={props.user} path="/gallery" component={ImageGallery} />, */}
     <ProtectedRoute user={props.user} path="/profile" component={Profile} /> 
     <Route component={NotFound} />
   </Switch>
