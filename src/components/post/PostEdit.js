@@ -50,6 +50,7 @@ const EditStyle = styled.div`
 `;
 
 class PostEdit extends Component {
+  unsubscriber = null;  
   state = {
     loading: true,
     showImageGallery: false,
@@ -74,9 +75,15 @@ class PostEdit extends Component {
       this.fetchPost(id);
     }
   }
+  
+  componentWillUnmount() {
+    if (typeof this.unsubscriber === 'function') {
+      this.unsubscriber();
+    }
+  }
 
   fetchPost(id) {
-    db.collection('posts').doc(id)
+    this.unsubscriber = db.collection('posts').doc(id)
     .onSnapshot(ref => {
       if (!ref.exists) {
         this.setState({loading: false})
