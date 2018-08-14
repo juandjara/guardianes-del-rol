@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
+import ImgContainer from '../ImgContainer';
 
 const PostListStyle = styled.div`
   padding: 10px;
@@ -31,17 +32,24 @@ const PostDetails = styled.li`
   padding: 8px 4px;
   > div {
     display: flex;
+    flex-wrap: wrap;
     align-items: flex-end;
     margin-bottom: 12px; 
-  }
-  .main-img {
-    margin-right: 12px;
-    max-width: 150px;
-  }
-  p, .user-wrapper {
-    font-size: 14px;
-    line-height: 18px;
-    margin-top: .5em;
+    .main-img {
+      flex: 1 1 auto;
+    }
+    .info {
+      flex: 1 0 0%;
+      padding: 0 12px;
+      p, .user-wrapper {
+        font-size: 14px;
+        line-height: 18px;
+        margin-top: .5em;
+      }
+      @media (min-width: 600px) {
+        flex-basis: auto;
+      }
+    }
   }
 `;
 
@@ -75,8 +83,11 @@ class PostList extends Component {
             {this.state.posts.map(post => (
               <PostDetails key={post.id}>
                 <div>
-                  <img className="main-img" src={post.mainImageUrl} alt="Imagen de portada" />
-                  <div>
+                  <ImgContainer role="img" 
+                    className="main-img"
+                    min={150}
+                    src={post.mainImageUrl} />
+                  <div className="info">
                     <p>
                       <strong>Plazas:</strong>
                       {' '}{post.fullSeats} / {post.totalSeats}

@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
+import ImgContainer from '../ImgContainer';
 
 const PostDisplayStyle = styled.div`
   padding: 10px 0;
@@ -35,16 +36,6 @@ const PostDisplayStyle = styled.div`
       margin: 10px;
     }
   }
-`;
-
-const ImgContainer = styled.div`
-  overflow: hidden;
-  min-height: 200px;
-  background-color: white;
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-image: url('${props => props.src}');
 `;
 
 class PostDisplay extends Component {
