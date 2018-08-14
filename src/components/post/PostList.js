@@ -11,6 +11,7 @@ const PostListStyle = styled.div`
   > h2 {
     text-align: center;
     font-size: 32px;
+    margin: 16px;
   }
   > a {
     display: block;
@@ -27,7 +28,7 @@ const PostListStyle = styled.div`
 
 const PostDetails = styled.li`
   margin-top: 8px;
-  padding: 8px;
+  padding: 8px 4px;
   > div {
     display: flex;
     align-items: flex-end;
@@ -39,7 +40,7 @@ const PostDetails = styled.li`
   }
   p, .user-wrapper {
     font-size: 14px;
-    line-height: 16px;
+    line-height: 18px;
     margin-top: .5em;
   }
 `;
@@ -92,7 +93,7 @@ class PostList extends Component {
                     </div>
                   </div>
                 </div>
-                <Link to={`/post/${post.id}`}>{post.title}</Link>
+                <Link to={`/post/${post.id}`}>{post.title || '(Sin título)'}</Link>
               </PostDetails>
             ))}
           </ul>
