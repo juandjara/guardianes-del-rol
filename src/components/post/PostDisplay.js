@@ -10,6 +10,7 @@ import { Quill } from 'react-quill/dist/index';
 
 const PostDisplayStyle = styled.div`
   padding: 10px 0;
+  font-size: 14px;
   .material-icons {
     margin-right: 4px;
     margin-bottom: 2px;
@@ -36,6 +37,11 @@ const PostDisplayStyle = styled.div`
     p, .user-wrapper {
       margin: 10px;
     }
+  }
+  .description {
+    font-size: 16px;
+    line-height: 20px;
+    margin: 10px 0;
   }
 `;
 
@@ -189,6 +195,10 @@ class PostDisplay extends Component {
             <strong>Jugadores: </strong>
             {players}
           </p>
+          <div className="description">
+            <strong style={{fontSize: 14, marginLeft: 10}}>Descripción: </strong>
+            <div dangerouslySetInnerHTML={{__html: this.state.post.description}}></div>
+          </div>
         </div>
       </PostDisplayStyle>
     );
