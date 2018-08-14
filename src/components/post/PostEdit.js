@@ -63,7 +63,8 @@ class PostEdit extends Component {
       description: { ops: [] },
       mainImageUrl: null,
       totalSeats: 0,
-      fullSeats: 0
+      fullSeats: 0,
+      players: []
     }
   }
 
@@ -179,6 +180,7 @@ class PostEdit extends Component {
     const post = this.state.post;
     const user = this.props.user;
     const canEdit = post.id && post.narrator ? post.narrator.email === user.email : true;
+    const players = post.players.map(u => u.displayName).join(', ');
     return !canEdit ? (<h2>Acceso denegado</h2>) : (
       <EditStyle className="container">
         <nav>
@@ -186,12 +188,12 @@ class PostEdit extends Component {
             <Icon icon="arrow_back" size="1em" />
             Volver
           </Button>
-          {post.id ? (
+          {/* {post.id ? (
             <Link to={`/post/${post.id}`}>
               <Icon icon="public" size="1em" />
               Ver publicaci&oacute;n
             </Link>
-          ) : null}
+          ) : null} */}
         </nav>
         <h2>{post.id ? 'Editar' : 'Nueva'} partida</h2>
         {this.state.loading ? 'Cargando...' : (
@@ -258,15 +260,19 @@ class PostEdit extends Component {
             </FormGroup>
             <FormGroup>
               <label htmlFor="totalSeats">Plazas totales</label>
-              <input type="number"
+              <input type="number" name="totalSeats"
                 value={post.totalSeats}
-                onChange={ev => this.edit('totalSeats', ev.target.value)} />
+                onChange={ev => this.edit('totalSeats', Number(ev.target.value))} />
             </FormGroup>
             <FormGroup>
               <label htmlFor="fullSeats">Plazas ocupadas</label>
               <input type="number" name="fullSeats"
                 value={post.fullSeats}
-                onChange={ev => this.edit('fullSeats', ev.target.value)} />
+                onChange={ev => this.edit('fullSeats', Number(ev.target.value))} />
+            </FormGroup>
+            <FormGroup>
+              <label>Jugadores</label>
+              <p style={{padding: '4px 0'}}>{players || 'Sin jugadores'}</p>
             </FormGroup>
             <Button main className="save-btn" onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />

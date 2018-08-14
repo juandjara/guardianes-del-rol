@@ -65,6 +65,13 @@ class PostList extends Component {
       this.setState({loading: false, posts})
     })
   }
+
+  componentWillUnmount() {
+    if (typeof this.unsubscriber === 'function') {
+      this.unsubscriber();
+    }
+  }
+
   render() {
     return (
       <PostListStyle className="container">

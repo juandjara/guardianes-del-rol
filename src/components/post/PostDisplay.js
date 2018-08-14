@@ -42,6 +42,7 @@ class PostDisplay extends Component {
   unsubscriber = null;
   state = {
     loading: true,
+    joinLoading: false,
     post: null
   }
 
@@ -79,9 +80,54 @@ class PostDisplay extends Component {
     this.props.history.goBack();
   }
 
+  join() {
+    const {id, players, fullSeats} = this.state.post;
+    const {email, displayName} = this.props.user;
+    const newPlayers = [
+      ...players,
+      {email, displayName}
+    ];
+    this.setState({joinLoading: true});
+    db.collection('posts').doc(id)
+    .update({
+      fullSeats: fullSeats + 1,
+      players: newPlayers
+    })
+    .then(() => {
+      this.setState({joinLoading: false});
+    })
+    .catch(() => {
+      this.setState({joinLoading: false});
+      window.alert('Algo ha fallado :c');
+    })
+  }
+
+  leave() {
+    const {id, players, fullSeats} = this.state.post;
+    const newPlayers = players.filter(
+      u => u.email !== this.props.user.email
+    );
+    this.setState({joinLoading: true});
+    db.collection('posts').doc(id)
+    .update({
+      fullSeats: fullSeats - 1,
+      players: newPlayers
+    })
+    .then(() => {
+      this.setState({joinLoading: false});
+    })
+    .catch(() => {
+      this.setState({joinLoading: false});
+      window.alert('Algo ha fallado :c');
+    }) 
+  }
+
   render() {
     const {post, loading} = this.state;
-    const canEdit = post && post.narrator.email === this.props.user.email;
+    const user = this.props.user;
+    const canEdit = post && post.narrator.email === user.email;
+    const players = post && post.players.map(u => u.displayName).join(', ');
+    const hasJoined = post && post.players.find(u => u.email === user.email);
     return (loading || !post) ? (
       <p style={{textAlign: 'center', margin: '1em'}}>Cargando partida</p>
     ) : (
@@ -98,10 +144,23 @@ class PostDisplay extends Component {
               Editar
             </Button>
           </Link>)}
-          <Button main style={{marginLeft: 6}}>
-            <Icon icon="group_add" size="1em" />
-            Apuntarme
-          </Button>
+          {hasJoined ? (
+            <Button 
+              disabled={this.state.joinLoading} 
+              style={{marginLeft: 6}}
+              onClick={() => this.leave()}>
+              <Icon icon="person_add_disabled" size="1em" />
+              Abandonar
+            </Button>
+          ) : (
+            <Button main 
+              disabled={this.state.joinLoading} 
+              style={{marginLeft: 6}}
+              onClick={() => this.join()}>
+              <Icon icon="group_add" size="1em" />
+              Apuntarme
+            </Button>
+          )}
         </nav>
         <h2>{post.title}</h2>
         <ImgContainer src={post.mainImageUrl} role="img" aria-label="imagen de portada" />
@@ -113,12 +172,16 @@ class PostDisplay extends Component {
               photoURL={post.narrator.photoURL} />
           </div>
           <p>
-            <strong>Plazas:</strong>
-            {' '}{post.fullSeats} / {post.totalSeats}
+            <strong>Fecha: </strong>  
+            {post.date} {post.hour}
           </p>
           <p>
-            <strong>Fecha:</strong>  
-            {' '}{post.date} {post.hour}
+            <strong>Plazas: </strong>
+            {post.fullSeats} / {post.totalSeats}
+          </p>
+          <p>
+            <strong>Jugadores: </strong>
+            {players}
           </p>
         </div>
       </PostDisplayStyle>
