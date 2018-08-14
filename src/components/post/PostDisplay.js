@@ -4,9 +4,10 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Button';
 import Icon from '../Icon';
+import UserDisplay from '../UserDisplay';
 
 const PostDisplayStyle = styled.div`
-  padding: 14px 0;
+  padding: 10px 0;
   .material-icons {
     margin-right: 4px;
     margin-bottom: 2px;
@@ -30,7 +31,7 @@ const PostDisplayStyle = styled.div`
     margin: 24px 12px;
   }
   .details {
-    p {
+    p, .user-wrapper {
       margin: 10px;
     }
   }
@@ -76,6 +77,7 @@ class PostDisplay extends Component {
         loading: false,
         post: {
           ...data,
+          id: snapshot.id,
           description: JSON.parse(data.description || 'null')
         }
       })
@@ -88,6 +90,9 @@ class PostDisplay extends Component {
 
   render() {
     const {post, loading} = this.state;
+    if (post && !post.narrator) {
+      post.narrator = {};
+    }
     return (loading || !post) ? (
       <p style={{textAlign: 'center', margin: '1em'}}>Cargando partida</p>
     ) : (
@@ -112,17 +117,19 @@ class PostDisplay extends Component {
         <h2>{post.title}</h2>
         <ImgContainer src={post.mainImageUrl} role="img" />
         <div className="details">
-          <p>
-            <strong>Fecha:</strong>  
-            {' '}{post.date} {post.hour}
-          </p>
-          <p>
+          <div className="user-wrapper">
             <strong>Narrador:</strong> 
-            {' '}{post.narrator}
-          </p>
+            <UserDisplay email={post.narrator.email}
+              displayName={post.narrator.displayName}
+              photoURL={post.narrator.photoURL} />
+          </div>
           <p>
             <strong>Plazas:</strong>
             {' '}{post.fullSeats} / {post.totalSeats}
+          </p>
+          <p>
+            <strong>Fecha:</strong>  
+            {' '}{post.date} {post.hour}
           </p>
         </div>
       </PostDisplayStyle>

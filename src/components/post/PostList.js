@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../Button';
 import Icon from '../Icon';
+import UserDisplay from '../UserDisplay';
 
 const PostListStyle = styled.div`
   padding: 10px;
@@ -32,11 +33,11 @@ const PostDetails = styled.li`
     align-items: flex-end;
     margin-bottom: 12px; 
   }
-  img {
+  .main-img {
     margin-right: 12px;
     max-width: 150px;
   }
-  p {
+  p, .user-wrapper {
     font-size: 14px;
     line-height: 16px;
     margin-top: .5em;
@@ -73,20 +74,22 @@ class PostList extends Component {
             {this.state.posts.map(post => (
               <PostDetails key={post.id}>
                 <div>
-                  <img src={post.mainImageUrl} alt="Imagen de portada" />
+                  <img className="main-img" src={post.mainImageUrl} alt="Imagen de portada" />
                   <div>
-                    <p>
-                      <strong>Fecha:</strong> 
-                      <br /> {post.date} {post.hour}
-                    </p>
-                    <p>
-                      <strong>Narrador:</strong> 
-                      <br /> {post.narrator}
-                    </p>
                     <p>
                       <strong>Plazas:</strong>
                       {' '}{post.fullSeats} / {post.totalSeats}
                     </p>
+                    <p>
+                      <strong>Fecha:</strong> 
+                      <br /> {post.date} {post.hour}
+                    </p>
+                    <div className="user-wrapper">
+                      <strong>Narrador:</strong> 
+                      <UserDisplay email={post.narrator.email}
+                        displayName={post.narrator.displayName}
+                        photoURL={post.narrator.photoURL} />
+                    </div>
                   </div>
                 </div>
                 <Link to={`/post/${post.id}`}>{post.title}</Link>

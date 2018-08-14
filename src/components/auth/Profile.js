@@ -6,9 +6,11 @@ import FormGroup from '../FormGroup';
 import { db, storage } from '../../firebase';
 import defaultAvatar from '../../assets/default-avatar-black.svg';
 import slugg from 'slugg';
+import UserDisplay from '../UserDisplay';
 
 const ProfileStyle = styled.div`
   padding: 16px;
+  font-size: 14px;
   button {
     margin-left: 0;
   }
@@ -37,21 +39,6 @@ const ProfileStyle = styled.div`
       padding: 0;
       width: auto;
       display: inline-block;
-    }
-  }
-  .preview {
-    font-size: 14px;
-    .preview-card {
-      display: flex;
-      align-items: center;
-      margin-top: 4px;
-      background: #f2f2f7;
-      border-radius: 4px;
-      img {
-        height: 40px;
-        margin: 4px;
-        border-radius: 50%;
-      }
     }
   }
   .avatar {
@@ -131,7 +118,8 @@ class Profile extends Component {
     })
   }
   render() {
-    const {name, avatar, loading} = this.state;
+    const {loading, name, avatar} = this.state;
+    const email = this.props.user.email;
     return (
       <ProfileStyle className="container">
         <Button className="back-btn" onClick={() => this.goBack()}>
@@ -141,10 +129,7 @@ class Profile extends Component {
         <h2>Cuenta</h2>
         <div className="preview">
           Asi te ver&aacute;n otros usuarios:
-          <div className="preview-card">
-            <img src={avatar} alt="avatar" />
-            <span>{name || this.props.user.email}</span>
-          </div>
+          <UserDisplay email={email} photoURL={avatar} displayName={name} />
         </div>   
         <form onSubmit={ev => this.save(ev)}>
           <FormGroup>

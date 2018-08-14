@@ -9,6 +9,7 @@ import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
 import FormGroup from '../FormGroup';
 import { Link } from 'react-router-dom';
+import UserDisplay from '../UserDisplay';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -69,21 +70,25 @@ class PostEdit extends Component {
     const id = this.props.match.params.id;
     if (id === 'new') {
       this.setState({loading: false})
-      return;
+    } else {
+      this.fetchPost(id);
     }
-    db.collection('posts').doc(id).get()
-    .then(docRef => {
-      if (!docRef.exists) {
+  }
+
+  fetchPost(id) {
+    db.collection('posts').doc(id)
+    .onSnapshot(ref => {
+      if (!ref.exists) {
         this.setState({loading: false})
         console.log('this document does not exists')
         return;
       }
-      const data = docRef.data();
+      const data = ref.data();
       this.setState({
         loading: false,
         post: {
           ...data,
-          id: docRef.id,
+          id: ref.id,
           description: JSON.parse(data.description || 'null')
         }
       })
@@ -92,12 +97,16 @@ class PostEdit extends Component {
 
   save() {
     const id = this.state.post.id;
-    const {displayName, email} = this.props.user;
+    const user = this.props.user;
     const post = {
       ...this.state.post,
       description: JSON.stringify(this.state.post.description),
       slug: slug(this.state.post.title),
-      narrator: displayName || email
+      narrator: {
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL
+      }
     }
     const promise = id ? this.update(id, post) : this.create(post);
     promise.then(() => {
@@ -161,8 +170,7 @@ class PostEdit extends Component {
 
   render() {
     const post = this.state.post;
-    const {displayName, email} = this.props.user;
-    const username = displayName || email;
+    const user = this.props.user;
     return (
       <EditStyle className="container">
         <nav>
@@ -203,9 +211,9 @@ class PostEdit extends Component {
             </FormGroup>
             <FormGroup>
               <label htmlFor="narrator">Narrador</label>
-              <input type="text"
-                value={username}
-                readOnly />
+              <UserDisplay email={user.email} 
+                photoURL={user.photoURL} 
+                displayName={user.displayName} />
             </FormGroup>
             <FormGroup>
               <label>Descripci&oacute;n</label>
