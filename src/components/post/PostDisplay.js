@@ -81,9 +81,7 @@ class PostDisplay extends Component {
 
   render() {
     const {post, loading} = this.state;
-    if (post && !post.narrator) {
-      post.narrator = {};
-    }
+    const canEdit = post && post.narrator.email === this.props.user.email;
     return (loading || !post) ? (
       <p style={{textAlign: 'center', margin: '1em'}}>Cargando partida</p>
     ) : (
@@ -94,12 +92,12 @@ class PostDisplay extends Component {
             Volver
           </Button>
           <div className="flex-space"></div>
-          <Link to={`/post/${post.id}/edit`}>
+          {canEdit && (<Link to={`/post/${post.id}/edit`}>
             <Button>
               <Icon icon="edit" size="1em" />
               Editar
             </Button>
-          </Link>
+          </Link>)}
           <Button main style={{marginLeft: 6}}>
             <Icon icon="group_add" size="1em" />
             Apuntarme

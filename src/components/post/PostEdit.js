@@ -178,7 +178,8 @@ class PostEdit extends Component {
   render() {
     const post = this.state.post;
     const user = this.props.user;
-    return (
+    const canEdit = post.id && post.narrator ? post.narrator.email === user.email : true;
+    return !canEdit ? (<h2>Acceso denegado</h2>) : (
       <EditStyle className="container">
         <nav>
           <Button className="back-btn" onClick={() => this.goBack()}>

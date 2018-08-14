@@ -56,16 +56,12 @@ const PostDetails = styled.li`
 class PostList extends Component {
   state = {loading: true, posts: []}
   componentDidMount() {
-    db.collection('posts').get()
-    .then(ref => {
-      const docs = ref.docs.map(
+    db.collection('posts')
+    .onSnapshot(snapshot => {
+      const posts = snapshot.docs.map(
         docRef => ({...docRef.data(), id: docRef.id})
       )
-      return docs;
-    })
-    .then(posts => {
       this.setState({loading: false, posts})
-      console.log('posts: ', posts)
     })
   }
   render() {
