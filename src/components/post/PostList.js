@@ -54,9 +54,10 @@ const PostDetails = styled.li`
 `;
 
 class PostList extends Component {
+  unsubscriber = null;  
   state = {loading: true, posts: []}
   componentDidMount() {
-    db.collection('posts')
+    this.unsubscriber = db.collection('posts')
     .onSnapshot(snapshot => {
       const posts = snapshot.docs.map(
         docRef => ({...docRef.data(), id: docRef.id})
