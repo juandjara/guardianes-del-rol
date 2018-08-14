@@ -84,6 +84,7 @@ class PostList extends Component {
               <PostDetails key={post.id}>
                 <div>
                   <ImgContainer role="img" 
+                    aria-label="imagen de portada"
                     className="main-img"
                     min={150}
                     src={post.mainImageUrl} />
