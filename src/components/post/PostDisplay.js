@@ -6,6 +6,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
 import ImgContainer from '../ImgContainer';
+import { Quill } from 'react-quill/dist/index';
 
 const PostDisplayStyle = styled.div`
   padding: 10px 0;
@@ -65,12 +66,17 @@ class PostDisplay extends Component {
         return;
       }
       const data = snapshot.data();
+      const description = JSON.parse(data.description || '[]');
+      const tempDiv = document.createElement('div');
+      (new Quill(tempDiv)).setContents(description);
+      const html = tempDiv.getElementsByClassName('ql-editor')[0].innerHTML;
+      
       this.setState({
         loading: false,
         post: {
           ...data,
           id: snapshot.id,
-          description: JSON.parse(data.description || 'null')
+          description: html
         }
       })
     })
