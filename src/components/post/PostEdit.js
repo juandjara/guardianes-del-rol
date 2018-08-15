@@ -47,11 +47,29 @@ const EditStyle = styled.div`
   .save-btn {
     margin-left: 0;
   }
+  .player {
+    padding: 4px 0;
+    font-size: 16px;
+    .material-icons {
+      color: red;
+      margin: 0;
+      margin-left: 8px;
+      cursor: pointer;
+      opacity: 0.5;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    &.disabled {
+      opacity: 0.5;
+    }
+  }
 `;
 
 class PostEdit extends Component {
   unsubscriber = null;  
   state = {
+    playersLoading: false,
     loading: true,
     showImageGallery: false,
     post: {
@@ -176,11 +194,34 @@ class PostEdit extends Component {
     }))
   }
 
+  removePlayer(user) {
+    const msg = '¿Estas seguro de que quieres eliminar a este jugador de la partida?';
+    if (!window.confirm(msg)) {
+      return;
+    }
+    const {id, players, fullSeats} = this.state.post;
+    const newPlayers = players.filter(
+      u => u.email !== user.email
+    );
+    this.setState({playersLoading: true});
+    db.collection('posts').doc(id)
+    .update({
+      fullSeats: fullSeats - 1,
+      players: newPlayers
+    })
+    .then(() => {
+      this.setState({playersLoading: false});
+    })
+    .catch(() => {
+      this.setState({playersLoading: false});
+      window.alert('Algo ha fallado :c');
+    }) 
+  }
+
   render() {
     const post = this.state.post;
     const user = this.props.user;
     const canEdit = post.id && post.narrator ? post.narrator.email === user.email : true;
-    const players = post.players.map(u => u.displayName).join(', ');
     return !canEdit ? (<h2>Acceso denegado</h2>) : (
       <EditStyle className="container">
         <nav>
@@ -272,7 +313,18 @@ class PostEdit extends Component {
             </FormGroup>
             <FormGroup>
               <label>Jugadores</label>
-              <p style={{padding: '4px 0'}}>{players || 'Sin jugadores'}</p>
+              {post.players.length === 0 ? 
+                <p style={{padding: '4px 0'}}>
+                  Sin jugadores
+                </p> : 
+                post.players.map(user => (
+                  <p key={user.email} className={`player ${this.state.playersLoading && 'loading'}`}>
+                    <span>{user.displayName}</span>
+                    <Icon onClick={() => this.removePlayer(user)} 
+                      icon="close" size="1em" />
+                  </p>
+                ))
+              }
             </FormGroup>
             <Button main className="save-btn" onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />
