@@ -51,6 +51,13 @@ const PostDetails = styled.li`
       }
     }
   }
+  .title {
+    small {
+      display: block;
+      color: #222;
+      padding-bottom: 4px;
+    }
+  }
 `;
 
 class PostList extends Component {
@@ -109,7 +116,10 @@ class PostList extends Component {
                     </div>
                   </div>
                 </div>
-                <Link to={`/post/${post.id}`}>{post.title || '(Sin título)'}</Link>
+                <Link className="title" to={`/post/${post.id}`}>
+                  <small>{post.game || ''}</small>
+                  {post.title || '(Sin título)'}
+                </Link>
               </PostDetails>
             ))}
           </ul>

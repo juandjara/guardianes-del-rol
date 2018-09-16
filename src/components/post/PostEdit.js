@@ -247,6 +247,13 @@ class PostEdit extends Component {
               />
             </FormGroup>
             <FormGroup>
+              <label htmlFor="game">Juego</label>
+              <input type="text" 
+                value={post.game}
+                onChange={ev => this.edit('game', ev.target.value)}
+              />
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="date">Fecha</label>
               <input type="date" name="date"
                 placeholder="YYYY-MM-DD"
