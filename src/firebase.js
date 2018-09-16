@@ -3,6 +3,9 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 
+const isDev = process.env.NODE_ENV !== 'production';
+console.log('> environment is ', isDev ? 'development' : 'production')
+
 const client = firebase.initializeApp({
   apiKey: 'AIzaSyA9EypsIdvoeuYtw5op7wJrxYhA5LUoRPw',
   authDomain: `guardianes-2018.firebaseapp.com`,
