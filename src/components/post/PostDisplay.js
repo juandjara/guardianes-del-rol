@@ -138,7 +138,7 @@ class PostDisplay extends Component {
     const {post, loading} = this.state;
     const user = this.props.user;
     const canEdit = post && post.narrator.email === user.email;
-    const players = post && post.players.map(u => u.displayName).join(', ');
+    const players = post && post.players.map(u => u.displayName || u.email).join(', ');
     const hasJoined = post && post.players.find(u => u.email === user.email);
     return (loading || !post) ? (
       <p style={{textAlign: 'center', margin: '1em'}}>Cargando partida</p>
