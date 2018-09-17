@@ -32,6 +32,7 @@ const FormGroup = styled.div`
     color: red;
     font-size: 12px;
     margin-top: 4px;
+    font-style: italic;
   }
 `;
 

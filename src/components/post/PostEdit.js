@@ -64,6 +64,11 @@ const EditStyle = styled.div`
       opacity: 0.5;
     }
   }
+  .global-error {
+    color: red;
+    font-size: 12px;
+    font-style: italic;
+  }
 `;
 
 class PostEdit extends Component {
@@ -222,6 +227,7 @@ class PostEdit extends Component {
     const post = this.state.post;
     const user = this.props.user;
     const canEdit = post.id && post.narrator ? post.narrator.email === user.email : true;
+    const formInvalid = !post.title;
     return !canEdit ? (<h2>Acceso denegado</h2>) : (
       <EditStyle className="container">
         <nav>
@@ -229,12 +235,6 @@ class PostEdit extends Component {
             <Icon icon="arrow_back" size="1em" />
             Volver
           </Button>
-          {/* {post.id ? (
-            <Link to={`/post/${post.id}`}>
-              <Icon icon="public" size="1em" />
-              Ver publicaci&oacute;n
-            </Link>
-          ) : null} */}
         </nav>
         <h2>{post.id ? 'Editar' : 'Nueva'} partida</h2>
         {this.state.loading ? 'Cargando...' : (
@@ -245,6 +245,7 @@ class PostEdit extends Component {
                 value={post.title}
                 onChange={ev => this.edit('title', ev.target.value)}
               />
+              {formInvalid && <p className="error">Campo obligatorio</p>}
             </FormGroup>
             <FormGroup>
               <label htmlFor="game">Juego</label>
@@ -333,7 +334,12 @@ class PostEdit extends Component {
                 ))
               }
             </FormGroup>
-            <Button main className="save-btn" onClick={() => this.save()}>
+            <p className="global-error">
+              Por favor, revise los errores del formulario
+            </p>
+            <Button main className="save-btn" 
+              disabled={formInvalid}
+              onClick={() => this.save()}>
               <Icon icon="publish" size="1em" />
               Publicar {post.id && 'cambios'}
             </Button>
