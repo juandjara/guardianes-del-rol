@@ -69,14 +69,27 @@ const EditStyle = styled.div`
     font-size: 12px;
     font-style: italic;
   }
+  .add-player-label {
+    margin-top: 16px;    
+  }
+  .add-player {
+    display: flex;
+    align-items: center;
+    input {
+      width: auto;
+    }
+    button {
+      margin: 0 4px;
+    }
+  }
 `;
 
 class PostEdit extends Component {
   unsubscriber = null;  
   state = {
-    playersLoading: false,
     loading: true,
     showImageGallery: false,
+    newPlayer: '',
     post: {
       id: null,
       title: '',
@@ -199,28 +212,38 @@ class PostEdit extends Component {
     }))
   }
 
+  addPlayer() {
+    if (!this.state.newPlayer) {
+      return;
+    }
+    const player = {
+      displayName: this.state.newPlayer,
+      email: `random${this.state.post.players.length + 1}@random.com`
+    }
+    this.setState(prev => ({
+      ...prev,
+      newPlayer: '',
+      post: {
+        ...prev.post,
+        fullSeats: prev.post.fullSeats + 1,
+        players: prev.post.players.concat(player)
+      }
+    }))
+  }
+
   removePlayer(user) {
     const msg = '¿Estas seguro de que quieres eliminar a este jugador de la partida?';
     if (!window.confirm(msg)) {
       return;
     }
-    const {id, players, fullSeats} = this.state.post;
-    const newPlayers = players.filter(
-      u => u.email !== user.email
-    );
-    this.setState({playersLoading: true});
-    db.collection('posts').doc(id)
-    .update({
-      fullSeats: fullSeats - 1,
-      players: newPlayers
-    })
-    .then(() => {
-      this.setState({playersLoading: false});
-    })
-    .catch(() => {
-      this.setState({playersLoading: false});
-      window.alert('Algo ha fallado :c');
-    }) 
+    this.setState(prev => ({
+      ...prev,
+      post: {
+        ...prev.post,
+        fullSeats: prev.post.fullSeats - 1,
+        players: prev.post.players.filter(u => u.email !== user.email)
+      }
+    }));
   }
 
   render() {
@@ -326,13 +349,24 @@ class PostEdit extends Component {
                   Sin jugadores
                 </p> : 
                 post.players.map(user => (
-                  <p key={user.email} className={`player ${this.state.playersLoading && 'loading'}`}>
+                  <p key={user.email} className="player">
                     <span>{user.displayName}</span>
                     <Icon onClick={() => this.removePlayer(user)} 
                       icon="close" size="1em" />
                   </p>
                 ))
               }
+              <label className="add-player-label">Nuevo jugador</label>
+              <div className="add-player">
+                <input type="text" name="newPlayer"
+                  value={this.state.newPlayer}
+                  onKeyUp={ev => ev.which === 13 && this.addPlayer()}
+                  onChange={ev => this.setState({newPlayer: ev.target.value})} />
+                <Button disabled={!this.state.newPlayer} onClick={() => this.addPlayer()}>
+                  <Icon icon="add" size="1em" />
+                  Añadir
+                </Button>
+              </div>
             </FormGroup>
             <p className="global-error">
               Por favor, revise los errores del formulario
