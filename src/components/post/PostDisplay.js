@@ -27,11 +27,14 @@ const PostDisplayStyle = styled.div`
       flex: 1 1 auto;
     }
   }
+  > p {
+    margin-top: 16px;
+  }
   h2 {
     text-align: center;
     font-size: 24px;
     flex: 1 1 auto;
-    margin: 24px 12px;
+    margin: 8px 12px 24px 12px;
   }
   .details {
     p, .user-wrapper {
