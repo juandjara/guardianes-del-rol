@@ -174,6 +174,7 @@ class PostDisplay extends Component {
             </Button>
           )}
         </nav>
+        <p style={{textAlign: 'center'}}>{post.game}</p>
         <h2>{post.title}</h2>
         <ImgContainer src={post.mainImageUrl} role="img" aria-label="imagen de portada" />
         <div className="details">

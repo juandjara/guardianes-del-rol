@@ -77,9 +77,11 @@ const EditStyle = styled.div`
     align-items: center;
     input {
       width: auto;
+      max-width: calc(100vw - 110px);
     }
     button {
       margin: 0 4px;
+      min-width: 75px;
     }
   }
 `;
