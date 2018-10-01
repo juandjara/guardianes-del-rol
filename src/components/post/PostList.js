@@ -65,6 +65,7 @@ class PostList extends Component {
   state = {loading: true, posts: []}
   componentDidMount() {
     this.unsubscriber = db.collection('posts')
+    .orderBy('date', 'desc')
     .onSnapshot(snapshot => {
       const posts = snapshot.docs.map(
         docRef => ({...docRef.data(), id: docRef.id})

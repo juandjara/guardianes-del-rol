@@ -11,6 +11,7 @@ const UserStyle = styled.div`
   border-radius: 4px;
   > img {
     height: 40px;
+    width: 40px;
     margin: 4px;
     border-radius: 50%;
   }
