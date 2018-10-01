@@ -14,16 +14,41 @@ const PostListStyle = styled.div`
     font-size: 32px;
     margin: 16px;
   }
-  > a {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 12px;
-    .material-icons {
-      margin-bottom: 2px;
-    }
-  }
   .material-icons {
     margin-right: 4px;
+  }
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    > a {
+      display: block;
+      font-size: 12px;
+      .material-icons {
+        margin-bottom: 2px;
+      }
+    }
+    .search-box {
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #eee;
+      background: white;
+      input {
+        background: transparent;
+        border: none;
+        font-size: 14px;
+        width: 110px;
+        outline: none;
+        &::placeholder {
+          color: #888;
+        }
+      }
+      .material-icons {
+        margin: 0;
+        font-size: 20px;
+      }
+    }
   }
 `;
 
@@ -62,7 +87,7 @@ const PostDetails = styled.li`
 
 class PostList extends Component {
   unsubscriber = null;  
-  state = {loading: true, posts: []}
+  state = {loading: true, posts: [], search: ''}
   componentDidMount() {
     this.unsubscriber = db.collection('posts')
     .orderBy('date', 'desc')
@@ -81,25 +106,43 @@ class PostList extends Component {
   }
 
   render() {
+    const search = this.state.search.toLowerCase();
+    const posts = this.state.posts.filter(post => {
+      const title = post.title.toLowerCase();
+      const game = post.game.toLowerCase();
+      const match = title.indexOf(search) !== -1 || game.indexOf(search) !== -1;
+      return search ? match : true;
+    });
     return (
       <PostListStyle className="container">
         <h2>Partidas</h2>
-        <Link to="/post/new/edit">
-          <Button>
-            <Icon icon="create" size="1em" />
-            Nueva partida
-          </Button>
-        </Link>
+        <div className="toolbar">
+          <Link to="/post/new/edit">
+            <Button>
+              <Icon icon="create" size="1em" />
+              Nueva partida
+            </Button>
+          </Link>
+          <div className="search-box">
+            <input 
+              type="text"
+              onChange={ev => this.setState({search: ev.target.value})}
+              placeholder="Buscar partidas" />
+            <Icon icon="search" />
+          </div>
+        </div>
         {this.state.loading ? 'Cargando...' : (
           <ul>
-            {this.state.posts.map(post => (
+            {posts.map(post => (
               <PostDetails key={post.id}>
                 <div>
-                  <ImgContainer role="img" 
-                    aria-label="imagen de portada"
-                    className="main-img"
-                    min={150}
-                    src={post.mainImageUrl} />
+                  <Link style={{flex: '1 1 auto'}} to={`/post/${post.id}`}>
+                    <ImgContainer role="img" 
+                      aria-label="imagen de portada"
+                      className="main-img"
+                      min={150}
+                      src={post.mainImageUrl} />
+                  </Link>
                   <div className="info">
                     <p>
                       <strong>Plazas:</strong>
