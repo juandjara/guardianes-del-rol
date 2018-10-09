@@ -6,6 +6,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
 import ImgContainer from '../ImgContainer';
+import { startOfWeek, endOfWeek, addWeeks, subWeeks, format } from 'date-fns';
 
 const PostListStyle = styled.div`
   padding: 10px;
@@ -29,25 +30,44 @@ const PostListStyle = styled.div`
         margin-bottom: 2px;
       }
     }
-    .search-box {
-      padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #eee;
-      background: white;
-      input {
-        background: transparent;
-        border: none;
-        font-size: 14px;
-        width: 110px;
-        outline: none;
-        &::placeholder {
-          color: #888;
-        }
+  }
+  .search-box {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid #eee;
+    background: white;
+    input {
+      background: transparent;
+      border: none;
+      font-size: 14px;
+      width: 110px;
+      outline: none;
+      &::placeholder {
+        color: #888;
       }
-      .material-icons {
-        margin: 0;
-        font-size: 20px;
+    }
+    .material-icons {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+  .week-selector {
+    display: flex;
+    align-items: center;
+    p {
+      flex-grow: 1;
+      text-align: center;
+    }
+    button {
+      flex: 0 0 auto;
+      background: transparent;
+      border: none;
+      &:hover {
+        background: #efefef;
       }
+    }
+    .material-icons {
+      margin: 0;
     }
   }
 `;
@@ -87,8 +107,29 @@ const PostDetails = styled.li`
 
 class PostList extends Component {
   unsubscriber = null;  
-  state = {loading: true, posts: [], search: ''}
+  state = {
+    loading: true,
+    posts: [],
+    search: '',
+    startDate: null,
+    endDate: null
+  }
+
   componentDidMount() {
+    const now = new Date();
+    const startDate = startOfWeek(now, {weekStartsOn: 1});
+    const endDate = endOfWeek(now, {weekStartsOn: 1});
+    this.setState({startDate, endDate});
+    this.fetchPosts();
+  }
+
+  componentWillUnmount() {
+    if (typeof this.unsubscriber === 'function') {
+      this.unsubscriber();
+    }
+  }
+
+  fetchPosts() {
     this.unsubscriber = db.collection('posts')
     .orderBy('date', 'desc')
     .onSnapshot(snapshot => {
@@ -99,19 +140,39 @@ class PostList extends Component {
     })
   }
 
-  componentWillUnmount() {
-    if (typeof this.unsubscriber === 'function') {
-      this.unsubscriber();
-    }
+  filterPrevWeek() {
+    const startDate = subWeeks(this.state.startDate, 1);
+    const endDate = subWeeks(this.state.endDate, 1);
+    this.setState({startDate, endDate});
+  }
+
+  filterNextWeek() {
+    const startDate = addWeeks(this.state.startDate, 1);
+    const endDate = addWeeks(this.state.endDate, 1);
+    this.setState({startDate, endDate});
+  }
+
+  checkSearch(post, search) {
+    const title = post.title.toLowerCase();
+    const game = post.game.toLowerCase();
+    const match = title.indexOf(search) !== -1 || game.indexOf(search) !== -1;
+    return match;
+  }
+
+  checkDate(post) {
+    const {startDate, endDate} = this.state;
+    const date = Number(new Date(post.date));
+    return date <= endDate && date >= startDate;
   }
 
   render() {
     const search = this.state.search.toLowerCase();
+    const startDate = format(this.state.startDate, 'DD/MM');
+    const endDate = format(this.state.endDate, 'DD/MM'); 
     const posts = this.state.posts.filter(post => {
-      const title = post.title.toLowerCase();
-      const game = post.game.toLowerCase();
-      const match = title.indexOf(search) !== -1 || game.indexOf(search) !== -1;
-      return search ? match : true;
+      const searchMatches = this.checkSearch(post, search);
+      const dateMatches = this.checkDate(post);
+      return search ? searchMatches : dateMatches;
     });
     return (
       <PostListStyle className="container">
@@ -130,6 +191,11 @@ class PostList extends Component {
               placeholder="Buscar partidas" />
             <Icon icon="search" />
           </div>
+        </div>
+        <div className="week-selector">
+          <Button onClick={() => this.filterPrevWeek()}><Icon icon="arrow_left" /></Button>
+          <p>Semana {startDate} - {endDate}</p>
+          <Button onClick={() => this.filterNextWeek()}><Icon icon="arrow_right" /></Button>
         </div>
         {this.state.loading ? 'Cargando...' : (
           <ul>

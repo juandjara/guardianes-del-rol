@@ -10,6 +10,7 @@ const UserStyle = styled.div`
   background: #f2f2f7;
   border-radius: 4px;
   > img {
+    flex: 0 0 auto;
     height: 40px;
     width: 40px;
     margin: 4px;
