@@ -7,6 +7,7 @@ import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
 import ImgContainer from '../ImgContainer';
 import { Quill } from 'react-quill/dist/index';
+import Helmet from 'react-helmet';
 
 const PostDisplayStyle = styled.div`
   padding: 10px 0;
@@ -78,10 +79,13 @@ class PostDisplay extends Component {
       const description = JSON.parse(data.description || '[]');
       const tempDiv = document.createElement('div');
       (new Quill(tempDiv)).setContents(description);
-      const html = tempDiv.getElementsByClassName('ql-editor')[0].innerHTML;
+      const node = tempDiv.getElementsByClassName('ql-editor')[0];
+      const html = node.innerHTML;
+      const text = node.textContent;
       
       this.setState({
         loading: false,
+        description_plain: text,
         post: {
           ...data,
           id: snapshot.id,
@@ -147,6 +151,12 @@ class PostDisplay extends Component {
       <p style={{textAlign: 'center', margin: '1em'}}>Cargando partida</p>
     ) : (
       <PostDisplayStyle className="container">
+        {post.title && this.state.description_plain && (
+          <Helmet>
+            <title>{post.title} | Guardianes del Rol</title>
+            <meta name="description" content={this.state.description_plain} />
+          </Helmet>
+        )}
         <nav>
           <Button className="back-btn" onClick={() => this.goBack()}>
             <Icon icon="arrow_back" size="1em" />
