@@ -23,5 +23,8 @@
     "copy": "cp build/index.html build/200.html",
     "surge": "surge build guardiadmin.surge.sh",
     "deploy": "npm run build && npm run copy && npm run surge"
+  },
+  "devDependencies": {
+    "surge": "^0.20.1"
   }
 }
