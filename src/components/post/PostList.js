@@ -85,7 +85,7 @@ const PostDetails = styled.li`
     }
     .info {
       flex: 1 0 0%;
-      padding: 0 12px;
+      padding-left: 12px;
       p, .user-wrapper {
         font-size: 14px;
         line-height: 18px;
@@ -206,17 +206,21 @@ class PostList extends Component {
                     <ImgContainer role="img" 
                       aria-label="imagen de portada"
                       className="main-img"
-                      min={150}
+                      min={180}
                       src={post.mainImageUrl} />
                   </Link>
                   <div className="info">
                     <p>
-                      <strong>Plazas:</strong>
-                      {' '}{post.fullSeats} / {post.totalSeats}
+                      <strong>Lugar:</strong>
+                      <br /> {post.place}
                     </p>
                     <p>
                       <strong>Fecha:</strong> 
                       <br /> {post.date} {post.hour}
+                    </p>
+                    <p>
+                      <strong>Plazas:</strong>
+                      {' '}{post.fullSeats} / {post.totalSeats}
                     </p>
                     <div className="user-wrapper">
                       <strong>Narrador:</strong> 

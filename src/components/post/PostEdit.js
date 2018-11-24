@@ -10,6 +10,7 @@ import ImageGallery from '../image-gallery/ImageGallery';
 import FormGroup from '../FormGroup';
 import { Link } from 'react-router-dom';
 import UserDisplay from '../UserDisplay';
+import format from 'date-fns/format';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -95,8 +96,10 @@ class PostEdit extends Component {
     post: {
       id: null,
       title: '',
+      game: '',
       narrator: null,
-      date: '',
+      date: format(new Date(), 'YYYY-MM-DD'),
+      place: '',
       hour: '',
       description: { ops: [] },
       mainImageUrl: null,
@@ -280,6 +283,13 @@ class PostEdit extends Component {
               />
             </FormGroup>
             <FormGroup>
+              <label htmlFor="place">Lugar</label>
+              <input type="text" 
+                value={post.place}
+                onChange={ev => this.edit('place', ev.target.value)}
+              />
+            </FormGroup>
+            <FormGroup>
               <label htmlFor="date">Fecha</label>
               <input type="date" name="date"
                 placeholder="YYYY-MM-DD"
@@ -370,9 +380,11 @@ class PostEdit extends Component {
                 </Button>
               </div>
             </FormGroup>
-            <p className="global-error">
-              Por favor, revise los errores del formulario
-            </p>
+            {formInvalid && (
+              <p className="global-error">
+                Por favor, revise los errores del formulario
+              </p>
+            )}
             <Button main className="save-btn" 
               disabled={formInvalid}
               onClick={() => this.save()}>

@@ -198,6 +198,10 @@ class PostDisplay extends Component {
               photoURL={post.narrator.photoURL} />
           </div>
           <p>
+            <strong>Lugar: </strong>
+            {post.place}
+          </p>
+          <p>
             <strong>Fecha: </strong>  
             {post.date} {post.hour}
           </p>
