@@ -4,10 +4,10 @@ import ReactQuill from 'react-quill/dist/index';
 const editorConfig = {
   modules: {
     toolbar: [
-      [{header: [1,2,false]}],
       ['bold', 'italic', 'underline'],
       ['link', 'image'],
-      ['blockquote', {list: 'ordered'}, {list: 'bullet'}]
+      ['blockquote', {list: 'ordered'}, {list: 'bullet'}],
+      [{header: [1,2,false]}]
     ]
   }
 }
