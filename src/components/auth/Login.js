@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
 import Icon from '../Icon';
-import withAuth from './withAuth';
+import withContext from '../../contextService';
 import {Redirect} from 'react-router-dom';
 
 const LoginStyle = styled.div`
@@ -135,5 +135,5 @@ class Login extends Component {
 
 }
 
-export default withAuth(Login);
+export default withContext(Login);
 

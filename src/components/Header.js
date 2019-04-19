@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { auth } from '../firebase';
 import styled from 'styled-components';
 import logo from '../assets/logo-guardianes.png';
-import withAuth from './auth/withAuth'
+import withContext from '../contextService'
 import Button from './Button';
 import Icon from './Icon';
 import { Link } from 'react-router-dom';
@@ -132,4 +132,4 @@ class Header extends Component {
   }
 }
 
-export default withAuth(Header);
+export default withContext(Header);

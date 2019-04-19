@@ -1,5 +1,5 @@
 import React from 'react';
-import withAuth from './auth/withAuth';
+import withContext from '../contextService';
 import { Route, Redirect, Switch } from 'react-router-dom';
 
 import Login from './auth/Login';
@@ -36,4 +36,4 @@ const Routes = props => props.loadingAuth ? <Loading /> : (
   </Switch>
 )
 
-export default withAuth(Routes);
+export default withContext(Routes);

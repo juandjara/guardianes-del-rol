@@ -1,11 +1,10 @@
 import React, {createContext, Component} from 'react';
-import { auth, db } from '../../firebase';
+import { auth, db } from './firebase';
 
 const initialContext = { user: null, loadingAuth: true};
-const AuthContext = createContext({...initialContext});
+const Context = createContext({...initialContext});
 
-export const AuthConsumer = AuthContext.Consumer;
-export class AuthProvider extends Component {
+export class ContextProvider extends Component {
   state = {...initialContext}
   unsubcriber = null;
 
@@ -52,24 +51,24 @@ export class AuthProvider extends Component {
   }
   render() {
     return (
-      <AuthContext.Provider value={this.state}>
+      <Context.Provider value={this.state}>
         {this.props.children}
-      </AuthContext.Provider>
+      </Context.Provider>
     )
   }
 }
 
-function withAuth(WrappedComponent) {
+function withContext(WrappedComponent) {
   const wrappedName = WrappedComponent.displayName || WrappedComponent.name;
-  const AuthContextWrapper = (props) => (
-    <AuthConsumer>
+  const ContextWrapper = (props) => (
+    <Context.Consumer>
       {context => (
         <WrappedComponent {...props} {...context} />
       )}
-    </AuthConsumer>
+    </Context.Consumer>
   )
-  AuthContextWrapper.displayName = `withAuth(${wrappedName})`;
-  return AuthContextWrapper;
+  ContextWrapper.displayName = `withContext(${wrappedName})`;
+  return ContextWrapper;
 }
 
-export default withAuth;
+export default withContext;

@@ -40,7 +40,7 @@ const PostListStyle = styled.div`
       background: transparent;
       border: none;
       font-size: 14px;
-      width: 110px;
+      width: 150px;
       outline: none;
       &::placeholder {
         color: #888;
@@ -176,6 +176,10 @@ class PostList extends Component {
     });
     return (
       <PostListStyle className="container">
+        <Helmet>
+          <title>Guardianes del Rol</title>
+          <meta name="description" content="" />
+        </Helmet>
         <h2>Partidas</h2>
         <div className="toolbar">
           <Link to="/post/new/edit">
