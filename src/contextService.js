@@ -1,7 +1,8 @@
 import React, {createContext, Component} from 'react';
 import { auth, db } from './firebase';
+import { getInitialTheme } from './theme';
 
-const initialContext = { user: null, loadingAuth: true};
+const initialContext = { theme: getInitialTheme(), user: null, loadingAuth: true};
 const Context = createContext({...initialContext});
 
 export class ContextProvider extends Component {

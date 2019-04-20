@@ -7,6 +7,7 @@ import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
 import ImgContainer from '../ImgContainer';
 import { startOfWeek, endOfWeek, addWeeks, subWeeks, format } from 'date-fns';
+import Helmet from 'react-helmet';
 
 const PostListStyle = styled.div`
   padding: 10px;
@@ -178,7 +179,6 @@ class PostList extends Component {
       <PostListStyle className="container">
         <Helmet>
           <title>Guardianes del Rol</title>
-          <meta name="description" content="" />
         </Helmet>
         <h2>Partidas</h2>
         <div className="toolbar">
