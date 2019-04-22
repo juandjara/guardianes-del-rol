@@ -8,9 +8,10 @@ import Icon from '../Icon';
 import Modal from 'react-awesome-modal';
 import ImageGallery from '../image-gallery/ImageGallery';
 import FormGroup from '../FormGroup';
-import { Link } from 'react-router-dom';
 import UserDisplay from '../UserDisplay';
 import format from 'date-fns/format';
+import { themeOptions } from '../../theme';
+import Select from 'react-select';
 
 const EditStyle = styled.div`
   padding: 20px 14px;
@@ -255,7 +256,7 @@ class PostEdit extends Component {
     const post = this.state.post;
     const user = this.props.user;
     const canEdit = post.id && post.narrator ? post.narrator.email === user.email : true;
-    const formInvalid = !post.title;
+    const formInvalid = !post.title || !post.section;
     return !canEdit ? (<h2>Acceso denegado</h2>) : (
       <EditStyle className="container">
         <nav>
@@ -272,6 +273,16 @@ class PostEdit extends Component {
               <input type="text" 
                 value={post.title}
                 onChange={ev => this.edit('title', ev.target.value)}
+              />
+              {formInvalid && <p className="error">Campo obligatorio</p>}
+            </FormGroup>
+            <FormGroup>
+              <label htmlFor="section">Sección</label>
+              <Select
+                isSearchable={false}
+                value={themeOptions.find(opt => opt.value === post.section)}
+                onChange={ev => this.edit('section', ev.value)}
+                options={themeOptions}
               />
               {formInvalid && <p className="error">Campo obligatorio</p>}
             </FormGroup>

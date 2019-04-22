@@ -180,7 +180,16 @@ class PostList extends Component {
     return date <= endDate && date >= startDate;
   }
 
+  checkTheme(post) {
+    const theme = this.props.theme;
+    if (theme === 'all') {
+      return true;
+    }
+    return (post.section || 'guardianes_rol') === theme;
+  }
+
   renderPost(post) {
+    const section = (themeOptions.find(opt => opt.value === post.section) || {label: 'Guardianes del Rol'}).label;
     return (
       <PostDetails key={post.id}>
         <div>
@@ -188,7 +197,7 @@ class PostList extends Component {
             <ImgContainer role="img" 
               aria-label="imagen de portada"
               className="main-img"
-              min={180}
+              min={210}
               src={post.mainImageUrl} />
           </Link>
           <div className="info">
@@ -203,6 +212,10 @@ class PostList extends Component {
             <p>
               <strong>Plazas:</strong>
               {' '}{post.fullSeats} / {post.totalSeats}
+            </p>
+            <p>
+              <strong>Sección:</strong>
+              <br /> {section}
             </p>
             <div className="user-wrapper">
               <strong>Narrador:</strong> 
@@ -225,9 +238,10 @@ class PostList extends Component {
     const startDate = format(this.state.startDate, 'DD/MM');
     const endDate = format(this.state.endDate, 'DD/MM'); 
     const posts = this.state.posts.filter(post => {
-      const searchMatches = this.checkSearch(post, search);
-      const dateMatches = this.checkDate(post);
-      return search ? searchMatches : dateMatches;
+      const searchMatch = this.checkSearch(post, search);
+      const dateMatch = this.checkDate(post);
+      const themeMatch = this.checkTheme(post);
+      return search ? searchMatch : (dateMatch && themeMatch);
     });
     const {theme, setTheme} = this.props;
     return (
