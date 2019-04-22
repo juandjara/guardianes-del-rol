@@ -1,0 +1,19 @@
+{
+    "name": "Guardianes del Rol",
+    "short_name": "Guardianes del Rol",
+    "icons": [
+        {
+            "src": "/icons/android-chrome-192x192.png?v=OmJXBrRA7g",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/icons/android-chrome-512x512.png?v=OmJXBrRA7g",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "theme_color": "#b91d47",
+    "background_color": "#b91d47",
+    "display": "standalone"
+}
