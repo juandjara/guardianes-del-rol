@@ -8,6 +8,9 @@ import UserDisplay from '../UserDisplay';
 import ImgContainer from '../ImgContainer';
 import { startOfWeek, endOfWeek, addWeeks, subWeeks, format } from 'date-fns';
 import Helmet from 'react-helmet';
+import Select from 'react-select';
+import withContext from '../../contextService';
+import { themeOptions } from '../../theme';
 
 const PostListStyle = styled.div`
   padding: 10px;
@@ -29,6 +32,9 @@ const PostListStyle = styled.div`
       font-size: 12px;
       .material-icons {
         margin-bottom: 2px;
+      }
+      > button {
+        margin-left: 0;
       }
     }
   }
@@ -69,6 +75,14 @@ const PostListStyle = styled.div`
     }
     .material-icons {
       margin: 0;
+    }
+  }
+  .section-selector {
+    margin: 16px 0;
+    > label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
     }
   }
 `;
@@ -166,6 +180,46 @@ class PostList extends Component {
     return date <= endDate && date >= startDate;
   }
 
+  renderPost(post) {
+    return (
+      <PostDetails key={post.id}>
+        <div>
+          <Link style={{flex: '1 1 auto'}} to={`/post/${post.id}`}>
+            <ImgContainer role="img" 
+              aria-label="imagen de portada"
+              className="main-img"
+              min={180}
+              src={post.mainImageUrl} />
+          </Link>
+          <div className="info">
+            <p>
+              <strong>Lugar:</strong>
+              <br /> {post.place}
+            </p>
+            <p>
+              <strong>Fecha:</strong> 
+              <br /> {post.date} {post.hour}
+            </p>
+            <p>
+              <strong>Plazas:</strong>
+              {' '}{post.fullSeats} / {post.totalSeats}
+            </p>
+            <div className="user-wrapper">
+              <strong>Narrador:</strong> 
+              <UserDisplay email={post.narrator.email}
+                displayName={post.narrator.displayName}
+                photoURL={post.narrator.photoURL} />
+            </div>
+          </div>
+        </div>
+        <Link className="title" to={`/post/${post.id}`}>
+          <small>{post.game || ''}</small>
+          {post.title || '(Sin título)'}
+        </Link>
+      </PostDetails>
+    )
+  }
+
   render() {
     const search = this.state.search.toLowerCase();
     const startDate = format(this.state.startDate, 'DD/MM');
@@ -175,6 +229,7 @@ class PostList extends Component {
       const dateMatches = this.checkDate(post);
       return search ? searchMatches : dateMatches;
     });
+    const {theme, setTheme} = this.props;
     return (
       <PostListStyle className="container">
         <Helmet>
@@ -196,55 +251,26 @@ class PostList extends Component {
             <Icon icon="search" />
           </div>
         </div>
+        <div className="section-selector">
+          <label>Sección:</label>
+          <Select
+            isSearchable={false}
+            value={themeOptions.find(opt => opt.value === theme)}
+            onChange={ev => setTheme(ev.value)}
+            options={themeOptions}
+          />
+        </div>
         <div className="week-selector">
           <Button onClick={() => this.filterPrevWeek()}><Icon icon="arrow_left" /></Button>
           <p>Semana {startDate} - {endDate}</p>
           <Button onClick={() => this.filterNextWeek()}><Icon icon="arrow_right" /></Button>
         </div>
         {this.state.loading ? 'Cargando...' : (
-          <ul>
-            {posts.map(post => (
-              <PostDetails key={post.id}>
-                <div>
-                  <Link style={{flex: '1 1 auto'}} to={`/post/${post.id}`}>
-                    <ImgContainer role="img" 
-                      aria-label="imagen de portada"
-                      className="main-img"
-                      min={180}
-                      src={post.mainImageUrl} />
-                  </Link>
-                  <div className="info">
-                    <p>
-                      <strong>Lugar:</strong>
-                      <br /> {post.place}
-                    </p>
-                    <p>
-                      <strong>Fecha:</strong> 
-                      <br /> {post.date} {post.hour}
-                    </p>
-                    <p>
-                      <strong>Plazas:</strong>
-                      {' '}{post.fullSeats} / {post.totalSeats}
-                    </p>
-                    <div className="user-wrapper">
-                      <strong>Narrador:</strong> 
-                      <UserDisplay email={post.narrator.email}
-                        displayName={post.narrator.displayName}
-                        photoURL={post.narrator.photoURL} />
-                    </div>
-                  </div>
-                </div>
-                <Link className="title" to={`/post/${post.id}`}>
-                  <small>{post.game || ''}</small>
-                  {post.title || '(Sin título)'}
-                </Link>
-              </PostDetails>
-            ))}
-          </ul>
+          <ul>{posts.map(post => this.renderPost(post))}</ul>
         )}
       </PostListStyle>
     )
   }
 }
 
-export default PostList;
+export default withContext(PostList);

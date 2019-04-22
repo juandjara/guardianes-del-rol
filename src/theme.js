@@ -1,4 +1,4 @@
-const defaultTheme = 'default';
+const defaultTheme = 'guardianes_rol';
 const THEME_STORAGE_KEY = 'gdr_theme';
 
 export function getInitialTheme() {
@@ -10,5 +10,6 @@ export function getInitialTheme() {
 export const themeOptions = [
   {label: 'El Dado Guardián', value: 'dado_guardian'},
   {label: 'Guardianes del Tablero', value: 'guardianes_jdm'},
-  {label: 'Guardianes del Rol', value: 'default'}
+  {label: 'Guardianes del Rol', value: 'guardianes_rol'},
+  {label: 'Todas', value: 'all'}
 ];

@@ -6,8 +6,14 @@ const initialContext = { theme: getInitialTheme(), user: null, loadingAuth: true
 const Context = createContext({...initialContext});
 
 export class ContextProvider extends Component {
-  state = {...initialContext}
+  
   unsubcriber = null;
+  state = {
+    ...initialContext,
+    setTheme: (theme) => {
+      this.setState({theme});
+    }
+  }
 
   componentDidMount() {
     this.listenAuth();
