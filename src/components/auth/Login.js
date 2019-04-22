@@ -42,15 +42,16 @@ class Login extends Component {
   }
 
   checkWhitelist(email) {
-    return db.collection('users')
-    .doc(email)
-    .get()
-    .then(ref => {
-      if (!ref.exists) {
-        const err = new Error(`El email ${email} no está en la lista de invitados`);
-        return Promise.reject(err);
-      }
-    })
+    return Promise.resolve();
+    // return db.collection('users')
+    // .doc(email)
+    // .get()
+    // .then(ref => {
+    //   if (!ref.exists) {
+    //     const err = new Error(`El email ${email} no está en la lista de invitados`);
+    //     return Promise.reject(err);
+    //   }
+    // })
   }
 
   checkMail(ev) {
