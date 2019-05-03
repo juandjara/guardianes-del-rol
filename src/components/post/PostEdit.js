@@ -108,6 +108,7 @@ class PostEdit extends Component {
       players: []
     }
   }
+  editorNode = null;
 
   componentDidMount() {
     const id = this.props.match.params.id;
@@ -140,6 +141,12 @@ class PostEdit extends Component {
           id: ref.id,
           description: JSON.parse(data.description || 'null')
         }
+      }, () => {
+        if (!this.editorNode) {
+          return;
+        }
+        Array.from(this.editorNode.getElementsByClassName('quill-plugin-image-upload-placeholder'))
+        .forEach(el => { el.className = '' });
       })
     })
   }
@@ -309,7 +316,7 @@ class PostEdit extends Component {
                 photoURL={user.photoURL} 
                 displayName={user.displayName} />
             </FormGroup>
-            <FormGroup>
+            <FormGroup innerRef={node => { this.editorNode = node; }}>
               <label>Descripci&oacute;n</label>
               <Editor
                 value={post.description}

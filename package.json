@@ -5,13 +5,15 @@
   "dependencies": {
     "date-fns": "^1.29.0",
     "firebase": "^5.1.0",
+    "quill-image-resize": "^3.0.9",
+    "quill-plugin-image-upload": "0.0.6",
     "react": "^16.4.1",
     "react-awesome-modal": "^2.0.3",
     "react-dom": "^16.4.1",
     "react-helmet": "^5.2.0",
     "react-quill": "^1.4.0-beta.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.4",
+    "react-scripts": "^3.0.0",
     "slugg": "^1.2.1",
     "styled-components": "^3.3.3"
   },
@@ -26,5 +28,17 @@
   },
   "devDependencies": {
     "surge": "^0.20.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }
