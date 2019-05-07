@@ -43,9 +43,21 @@ const PostDisplayStyle = styled.div`
     }
   }
   .description {
-    font-size: 16px;
+    font-size: 14px;
     line-height: 20px;
     margin: 10px 0;
+    > strong {
+      margin-left: 10px;
+    }
+    .inner {
+      padding: 8px 16px;
+      p {
+        margin: 0;
+      }
+      img {
+        max-width: 100%;
+      }
+    }
   }
 `;
 
@@ -80,6 +92,8 @@ class PostDisplay extends Component {
       const tempDiv = document.createElement('div');
       (new Quill(tempDiv)).setContents(description);
       const node = tempDiv.getElementsByClassName('ql-editor')[0];
+      Array.from(node.getElementsByClassName('quill-plugin-image-upload-placeholder'))
+      .forEach(el => {el.className = ''});
       const html = node.innerHTML;
       const text = node.textContent;
       
@@ -213,8 +227,8 @@ class PostDisplay extends Component {
             {players}
           </p>
           <div className="description">
-            <strong style={{fontSize: 14, marginLeft: 10}}>Descripción: </strong>
-            <div dangerouslySetInnerHTML={{__html: this.state.post.description}}></div>
+            <strong>Descripción: </strong>
+            <div className="inner" dangerouslySetInnerHTML={{__html: this.state.post.description}}></div>
           </div>
         </div>
       </PostDisplayStyle>
