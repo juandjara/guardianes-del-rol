@@ -10,6 +10,7 @@ import Profile from './auth/Profile';
 import ProtectedRoute from './auth/ProtectedRoute';
 import LoginConfirm from './auth/LoginConfirm';
 import PostDisplay from './post/PostDisplay';
+import Privacy from './Privacy';
 
 const Loading = () => (
   <p style={{margin: '1em', textAlign: 'center'}}>
@@ -22,6 +23,7 @@ const Routes = props => props.loadingAuth ? <Loading /> : (
     <Route exact path="/" render={() => <Redirect to="/post" />} />
     <Route path="/login" component={Login} />
     <Route path="/login_confirm" component={LoginConfirm} />
+    <Route path="/privacy" component={Privacy} />
     <ProtectedRoute user={props.user} exact path="/post" component={PostList} />
     <ProtectedRoute exact user={props.user} path="/post/:id" component={PostDisplay} />
     <ProtectedRoute exact user={props.user} path="/post/:id/edit" component={PostEdit} />

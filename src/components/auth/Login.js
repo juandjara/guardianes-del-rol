@@ -127,6 +127,8 @@ class Login extends Component {
                 </span>
               ) : 'Continuar'}
             </Button>
+            <p style={{marginTop: 16, fontSize: 14, fontWeight: 300}}>
+            Si tienes cualquier duda con el proceso de iniciar sesión puedes preguntar en <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a> </p>
           </form>
         )}
       </LoginStyle>
