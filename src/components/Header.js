@@ -64,6 +64,10 @@ const DialogStyle = styled.div`
     margin: 4px;
     padding: 6px;
     display: block;
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
   }
   button.item {
     margin-left: auto;
@@ -85,10 +89,12 @@ const DialogStyle = styled.div`
 class Header extends Component {
   dialogNode = null;
   state = { open: false }
+
   openDropdown() {
     this.setState({open: true})
     window.addEventListener('click', this.closeDropdown);
   }
+
   closeDropdown = (ev) => {
     if (
       this.dialogNode && 
@@ -99,6 +105,12 @@ class Header extends Component {
     this.setState({open: false})
     window.removeEventListener('click', this.closeDropdown)
   }
+
+  logout() {
+    localStorage.removeItem('anonUsername');
+    auth.signOut();
+  }
+
   render() {
     const user = this.props.user;
     const username = user && (user.displayName || user.email);
@@ -118,10 +130,14 @@ class Header extends Component {
             alt="avatar" />
           <DialogStyle open={this.state.open}>
             <p className="name">{username}</p>
-            <Link className="item" to="/profile">Cuenta</Link>
+            <div title={user.isAnonymous ? 'La edición de cuentas esta desactivada para usuarios invitados' : ''}>
+              <Link 
+                className={`item ${user.isAnonymous ? 'disabled' : ''}`} 
+                to="/profile">Cuenta</Link>
+            </div>
             <Button
               className="item"
-              onClick={() => auth.signOut()}>
+              onClick={() => this.logout()}>
               <Icon icon="person_outline" size="1em" style={{marginRight: 4}} />
               Cerrar sesion
             </Button>

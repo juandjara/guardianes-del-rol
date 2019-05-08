@@ -35,6 +35,9 @@ export class ContextProvider extends Component {
         return;
       }
       if (user && !this.state.user) {
+        if (user.isAnonymous) {
+          user = this.makeUserFromAnon(user);
+        }
         this.setState({user}, () => {
           this.listenUserDB();
         })
@@ -56,6 +59,16 @@ export class ContextProvider extends Component {
       (err) => { console.error(err) }
     )
   }
+
+  makeUserFromAnon(user) {
+    const username = localStorage.getItem('anonUsername');
+    return {
+      ...user,
+      displayName: username,
+      email: `${username}@anon.com`
+    }
+  }
+
   render() {
     return (
       <Context.Provider value={this.state}>

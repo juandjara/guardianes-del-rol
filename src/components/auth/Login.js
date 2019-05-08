@@ -84,6 +84,22 @@ class Login extends Component {
     })
   }
 
+  anonLogin() {
+    const username = window.prompt('Elige un nombre de usuario');
+    if (!username) {
+      return;
+    }
+    localStorage.setItem('anonUsername', username);
+    auth.signInAnonymously()
+    .then(() => {
+      this.props.history.push('/');
+    })
+    .catch(err => {
+      console.error('anon login err: ', err);
+      window.alert('Algo ha fallado :C');
+    });
+  }
+
   render() {
     const {email, mailSent, error, loading} = this.state;
     const mailDomain = email.replace(/^.+@/, '');
@@ -127,8 +143,9 @@ class Login extends Component {
                 </span>
               ) : 'Continuar'}
             </Button>
+            <Button type="button" onClick={() => this.anonLogin()}>Entrar como invitado</Button>
             <p style={{marginTop: 16, fontSize: 14, fontWeight: 300}}>
-            Si tienes cualquier duda con el proceso de iniciar sesión puedes preguntar en <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a> </p>
+            Si tienes cualquier duda con el proceso de iniciar sesión puedes mandar un correo a <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a> </p>
           </form>
         )}
       </LoginStyle>
