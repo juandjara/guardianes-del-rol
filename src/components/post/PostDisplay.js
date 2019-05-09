@@ -129,9 +129,10 @@ class PostDisplay extends Component {
     .then(() => {
       this.setState({joinLoading: false});
     })
-    .catch(() => {
+    .catch(err => {
       this.setState({joinLoading: false});
       window.alert('Algo ha fallado :c');
+      console.error(err);
     })
   }
 

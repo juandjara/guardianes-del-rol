@@ -2,7 +2,12 @@ import React, {createContext, Component} from 'react';
 import { auth, db } from './firebase';
 import { getInitialTheme } from './theme';
 
-const initialContext = { theme: getInitialTheme(), user: null, loadingAuth: true};
+const initialContext = {
+  day: new URLSearchParams(window.location.search).get('day'),
+  theme: getInitialTheme(),
+  user: null,
+  loadingAuth: true
+};
 const Context = createContext({...initialContext});
 
 export class ContextProvider extends Component {

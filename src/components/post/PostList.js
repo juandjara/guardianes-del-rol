@@ -131,9 +131,10 @@ class PostList extends Component {
   }
 
   componentDidMount() {
-    const now = new Date();
-    const startDate = startOfWeek(now, {weekStartsOn: 1});
-    const endDate = endOfWeek(now, {weekStartsOn: 1});
+    const dayFromUrl = this.props.day;
+    const date = dayFromUrl ? new Date(dayFromUrl) : new Date();
+    const startDate = startOfWeek(date, {weekStartsOn: 1});
+    const endDate = endOfWeek(date, {weekStartsOn: 1});
     this.setState({startDate, endDate});
     this.fetchPosts();
   }
