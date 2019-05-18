@@ -26,7 +26,7 @@ function Privacy() {
     <PrivacyStyle className="container">
       <h2>Política de Privacidad</h2>
       <p>
-        Esta Política de Privacidad describe como recogemos, guardamos o utilizamos la información que recabamos a través de los servicios disponibles en este sitio. Es importante que entienda que información almacenamos ya que el acceso a este sitio y el uso de estos servicios implica la aceptación de nuestra política de privacidad.
+        Esta Política de Privacidad describe como recogemos, guardamos o utilizamos la información que recabamos a través de los servicios disponibles en este sitio. Es importante que entienda que información almacenamos ya que el acceso a este sitio y el uso de estos servicios implica la aceptación de nuestra política de privacidad. Un técnico puede revisar en cualquier momento las operaciones de tratamiento de datos que realiza esta aplicación leyendo su código fuente en <a href="https://github.com/juandjara/guardianes-del-rol">GitHub</a>
       </p>
       <h3>Tu información</h3>
       <p>
