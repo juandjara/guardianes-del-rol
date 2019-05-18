@@ -51,7 +51,7 @@ function Footer() {
         <Button onClick={() => { setCookieGood() }}>Aceptar</Button>
       </CookieWindow>
       <PrivacyLinkContainer>
-        <Link to="/privacy">Politica de privacidad</Link>
+        <Link to="/privacy">RGPD y Politica de privacidad</Link>
       </PrivacyLinkContainer>
     </footer>
   );

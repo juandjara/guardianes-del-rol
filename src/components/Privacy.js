@@ -64,7 +64,34 @@ function Privacy() {
       </p>
       <h3>Contacto</h3>
       <p>
-        Puedes enviarnos un correo a <a href="guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a> si tienes cualquier consulta sobre el funcionamiento de lo aquí expuesto. Si quieres registrar una queja, acceder, corregir, enmendar o borrar cualquier información personal que poseamos sobre ti, envianos un correo a esta dirección y responderemos a la mayor brevedad posible.
+        Puedes enviarnos un correo a <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a> si tienes cualquier consulta sobre el funcionamiento de lo aquí expuesto. Si quieres registrar una queja, acceder, corregir, enmendar o borrar cualquier información personal que poseamos sobre ti, envianos un correo a esta dirección y responderemos a la mayor brevedad posible.
+      </p>
+      <h2>RGPD</h2>
+      <h3>1 - Responsable</h3>
+      <p>
+        Conforme  con la normativa vigente de Protección de Datos de le informamos que los datos personales proporcionados serán incorporados a los ficheros de socios y usuarios cuyo titular y responsable del tratamiento es la Asociacion Cultural de ocio alternativo Guardianes Sevilla con domicilio en la calle Valle Verde 4, 41927 Mairena del Aljarafe (Sevilla).
+        <br /><br />
+        Usted podrá contactar con el Responsable de Protección de Datos en el correo <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a>
+      </p>
+      <h3>2 - Finalidad del tratamiento</h3>
+      <p>
+        Los datos personales que nos proporcione serán utilizados unicamente con la finalidad de registro en esta web, para participar en las partidas de rol que se organizan a través de ella. Nunca usaremos las direcciones de correo proporcionadas para enviar propaganda a nuestros usuarios.
+      </p>
+      <h3>3 - Cesión de Datos a Terceros</h3>
+      <p>
+        Los datos no se cederán a terceros salvo en los casos en que exista una obligación legal
+      </p>
+      <h3>4 - Cookies</h3>
+      <p>
+        Informamos que al acceder al sitio web se podrán utilizar cookies para mantener activa la sesión del usuario y guardar sus preferencias seleccionadas en la aplicación. Para más información, lea el apartado de Cookies en la política de privacidad.
+      </p>
+      <h3>5 - Derechos</h3>
+      <p>
+        Usted puede ejercer los derechos sobre los datos suministrados recogidos en el art. 13 del RGPD de acceso, rectificación o supresión, limitación de tratamiento, oposición del tratamiento y derecho al olvido de los datos personales facilitados.
+        <br/><br/>
+        Puede ejercer estos derechos y revocar los consentimientos sobre el tratamiento dados enviando un correo electrónico a la dirección <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a>, acreditando ser titular de los datos sobre los que quiere ejercer esos derechos.
+        <br/><br/>
+        Le informamos que usted puede presentar una reclamación ante la Autoridad de Control en materia de Protección de Datos competente si no obtiene satisfacción en el ejercicio de sus derechos.
       </p>
     </PrivacyStyle>
   );
