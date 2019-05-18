@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
 import Icon from '../Icon';
-import withAuth from './withAuth';
+import withContext from '../../contextService';
 import {Redirect} from 'react-router-dom';
 
 const LoginStyle = styled.div`
@@ -36,6 +36,7 @@ const LoginStyle = styled.div`
 class Login extends Component {
   state = {
     email: '',
+    username: '',
     error: null,
     mailSent: false,
     loading: false
@@ -84,8 +85,25 @@ class Login extends Component {
     })
   }
 
+  anonLogin(ev) {
+    ev.preventDefault();
+    const username = this.state.username || window.prompt('Elige un nombre de usuario');
+    if (!username) {
+      return;
+    }
+    localStorage.setItem('anonUsername', username);
+    auth.signInAnonymously()
+    .then(() => {
+      this.props.history.push('/');
+    })
+    .catch(err => {
+      console.error('anon login err: ', err);
+      window.alert('Algo ha fallado :C');
+    });
+  }
+
   render() {
-    const {email, mailSent, error, loading} = this.state;
+    const {username, email, mailSent, error, loading} = this.state;
     const mailDomain = email.replace(/^.+@/, '');
     const redirection = this.props.location.state || {next: '/'};
     const user = this.props.user;
@@ -110,8 +128,8 @@ class Login extends Component {
             </a>
           </div>
         ) : (
-          <form onSubmit={ev => this.checkMail(ev)}>
-            <FormGroup error={!!error} style={{marginBottom: 10}}>
+          <form onSubmit={(ev) => this.anonLogin(ev)}>
+            {/* <FormGroup error={!!error} style={{marginBottom: 10}}>
               <label htmlFor="email">Introduce tu email para continuar</label>
               <input type="email" name="email" required
                 placeholder="Email"
@@ -126,7 +144,18 @@ class Login extends Component {
                   <Icon icon="autorenew" className="spin" />
                 </span>
               ) : 'Continuar'}
-            </Button>
+            </Button> */}
+            <FormGroup error={!!error} style={{marginBottom: 10}}>
+              <label htmlFor="username">Elige un nombre de usuario</label>
+              <input type="username" name="username" required
+                placeholder="Nombre de usuario"
+                value={username}
+                onChange={ev => this.setState({username: ev.target.value})} />
+            </FormGroup>
+            <Button type="submit" main>Entrar como invitado</Button>
+            <p style={{marginTop: 16, fontSize: 14, fontWeight: 300}}>
+              Si tienes cualquier duda con el proceso de iniciar sesión puedes mandar un correo a <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a>
+            </p>
           </form>
         )}
       </LoginStyle>
@@ -135,5 +164,5 @@ class Login extends Component {
 
 }
 
-export default withAuth(Login);
+export default withContext(Login);
 

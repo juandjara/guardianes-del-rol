@@ -129,9 +129,10 @@ class PostDisplay extends Component {
     .then(() => {
       this.setState({joinLoading: false});
     })
-    .catch(() => {
+    .catch(err => {
       this.setState({joinLoading: false});
       window.alert('Algo ha fallado :c');
+      console.error(err);
     })
   }
 
@@ -165,10 +166,9 @@ class PostDisplay extends Component {
       <p style={{textAlign: 'center', margin: '1em'}}>Cargando partida</p>
     ) : (
       <PostDisplayStyle className="container">
-        {post.title && this.state.description_plain && (
+        {post.title && (
           <Helmet>
             <title>{post.title} | Guardianes del Rol</title>
-            <meta name="description" content={this.state.description_plain} />
           </Helmet>
         )}
         <nav>

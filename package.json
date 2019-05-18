@@ -1,5 +1,5 @@
 {
-  "name": "guardiadmin",
+  "name": "guardianesdelrol",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -7,24 +7,24 @@
     "firebase": "^5.1.0",
     "quill-image-resize": "^3.0.9",
     "quill-plugin-image-upload": "0.0.6",
-    "react": "^16.4.1",
+    "react": "^16.8.6",
     "react-awesome-modal": "^2.0.3",
-    "react-dom": "^16.4.1",
+    "react-dom": "^16.8.6",
     "react-helmet": "^5.2.0",
     "react-quill": "^1.4.0-beta.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "^3.0.0",
+    "react-select": "^2.4.3",
     "slugg": "^1.2.1",
     "styled-components": "^3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "now-build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "copy": "cp build/index.html build/200.html",
-    "surge": "surge build guardiadmin.surge.sh",
-    "deploy": "npm run build && npm run copy && npm run surge"
+    "deploy": "now --target=production"
   },
   "devDependencies": {
     "surge": "^0.20.1"

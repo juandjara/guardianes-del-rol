@@ -15,9 +15,9 @@ body {
   background-color: #191919;
   background-image: linear-gradient(rgba(0,0,0, 0.4), rgba(0,0,0, 0.4)), 
                     url(./assets//dice-bg.jpg);
-  background-repeat: no-repeat;
+  background-repeat: repeat;
   background-position: center center;
-  background-size: cover;
+  background-size: 100% auto;
 }
 
 h1,h2,h3 {

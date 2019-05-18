@@ -1,13 +1,24 @@
 import React, {createContext, Component} from 'react';
-import { auth, db } from '../../firebase';
+import { auth, db } from './firebase';
+import { getInitialTheme } from './theme';
 
-const initialContext = { user: null, loadingAuth: true};
-const AuthContext = createContext({...initialContext});
+const initialContext = {
+  day: new URLSearchParams(window.location.search).get('day'),
+  theme: getInitialTheme(),
+  user: null,
+  loadingAuth: true
+};
+const Context = createContext({...initialContext});
 
-export const AuthConsumer = AuthContext.Consumer;
-export class AuthProvider extends Component {
-  state = {...initialContext}
+export class ContextProvider extends Component {
+  
   unsubcriber = null;
+  state = {
+    ...initialContext,
+    setTheme: (theme) => {
+      this.setState({theme});
+    }
+  }
 
   componentDidMount() {
     this.listenAuth();
@@ -29,6 +40,9 @@ export class AuthProvider extends Component {
         return;
       }
       if (user && !this.state.user) {
+        if (user.isAnonymous) {
+          user = this.makeUserFromAnon(user);
+        }
         this.setState({user}, () => {
           this.listenUserDB();
         })
@@ -50,26 +64,36 @@ export class AuthProvider extends Component {
       (err) => { console.error(err) }
     )
   }
+
+  makeUserFromAnon(user) {
+    const username = localStorage.getItem('anonUsername');
+    return {
+      ...user,
+      displayName: username,
+      email: `${username}@anon.com`
+    }
+  }
+
   render() {
     return (
-      <AuthContext.Provider value={this.state}>
+      <Context.Provider value={this.state}>
         {this.props.children}
-      </AuthContext.Provider>
+      </Context.Provider>
     )
   }
 }
 
-function withAuth(WrappedComponent) {
+function withContext(WrappedComponent) {
   const wrappedName = WrappedComponent.displayName || WrappedComponent.name;
-  const AuthContextWrapper = (props) => (
-    <AuthConsumer>
+  const ContextWrapper = (props) => (
+    <Context.Consumer>
       {context => (
         <WrappedComponent {...props} {...context} />
       )}
-    </AuthConsumer>
+    </Context.Consumer>
   )
-  AuthContextWrapper.displayName = `withAuth(${wrappedName})`;
-  return AuthContextWrapper;
+  ContextWrapper.displayName = `withContext(${wrappedName})`;
+  return ContextWrapper;
 }
 
-export default withAuth;
+export default withContext;
