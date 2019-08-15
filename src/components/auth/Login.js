@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component, Fragment} from 'react';
 import { db, auth } from '../../firebase';
 import styled from 'styled-components';
 import Button from '../Button';
@@ -55,8 +55,7 @@ class Login extends Component {
     // })
   }
 
-  checkMail(ev) {
-    ev.preventDefault();
+  checkMail() {
     this.setState({loading: true});
     this.checkWhitelist(this.state.email)
     .then(() => {
@@ -85,8 +84,7 @@ class Login extends Component {
     })
   }
 
-  anonLogin(ev) {
-    ev.preventDefault();
+  anonLogin() {
     const username = this.state.username || window.prompt('Elige un nombre de usuario');
     if (!username) {
       return;
@@ -107,6 +105,8 @@ class Login extends Component {
     const mailDomain = email.replace(/^.+@/, '');
     const redirection = this.props.location.state || {next: '/'};
     const user = this.props.user;
+    
+    const useAnonLogin = true;
 
     return user ? <Redirect to={redirection.next} /> : (
       <LoginStyle className="container">
@@ -128,31 +128,40 @@ class Login extends Component {
             </a>
           </div>
         ) : (
-          <form onSubmit={(ev) => this.checkMail(ev)}>
-            <FormGroup error={!!error} style={{marginBottom: 10}}>
-              <label htmlFor="email">Introduce tu email para continuar</label>
-              <input type="email" name="email" required
-                placeholder="Email"
-                value={email}
-                onChange={ev => this.setState({email: ev.target.value})} />
-              <div className="error">{error}</div>
-            </FormGroup>
-            <Button type="submit" disabled={loading} main>
-              {loading ? (
-                <span>
-                  Cargando...
-                  <Icon icon="autorenew" className="spin" />
-                </span>
-              ) : 'Continuar'}
-            </Button>
-            {/* <FormGroup error={!!error} style={{marginBottom: 10}}>
-              <label htmlFor="username">Elige un nombre de usuario</label>
-              <input type="username" name="username" required
-                placeholder="Nombre de usuario"
-                value={username}
-                onChange={ev => this.setState({username: ev.target.value})} />
-            </FormGroup>
-            <Button type="submit" main>Entrar como invitado</Button> */}
+          <form onSubmit={(ev) => ev.preventDefault()}>
+            {useAnonLogin ? (
+              <Fragment>
+                <FormGroup error={!!error} style={{marginBottom: 10}}>
+                  <label htmlFor="username">Elige un nombre de usuario</label>
+                  <input type="username" name="username" required
+                    placeholder="Nombre de usuario"
+                    value={username}
+                    onChange={ev => this.setState({username: ev.target.value})} />
+                </FormGroup>
+                <Button type="submit" main onClick={() => this.anonLogin()}>
+                  Entrar como invitado
+                </Button> 
+              </Fragment>
+            ) : (
+              <Fragment>
+                <FormGroup error={!!error} style={{marginBottom: 10}}>
+                  <label htmlFor="email">Introduce tu email para continuar</label>
+                  <input type="email" name="email" required
+                    placeholder="Email"
+                    value={email}
+                    onChange={ev => this.setState({email: ev.target.value})} />
+                  <div className="error">{error}</div>
+                </FormGroup>
+                <Button type="submit" disabled={loading} main onClick={() => this.checkMail()}>
+                  {loading ? (
+                    <span>
+                      Cargando...
+                      <Icon icon="autorenew" className="spin" />
+                    </span>
+                  ) : 'Continuar'}
+                </Button>
+              </Fragment>
+            )}
             <p style={{marginTop: 16, fontSize: 14, fontWeight: 300}}>
               Si tienes cualquier duda con el proceso de iniciar sesión puedes mandar un correo a <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a>
             </p>

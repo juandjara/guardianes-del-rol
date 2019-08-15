@@ -289,7 +289,7 @@ class PostEdit extends Component {
                 isSearchable={false}
                 value={themeOptions.find(opt => opt.value === post.section)}
                 onChange={ev => this.edit('section', ev.value)}
-                options={themeOptions}
+                options={themeOptions.filter(opt => opt.value !== 'all')}
               />
               {formInvalid && <p className="error">Campo obligatorio</p>}
             </FormGroup>
