@@ -10,7 +10,8 @@ export function getInitialTheme() {
 export const themeOptions = [
   {label: 'Aniversario Lovecraft', value: 'aniv_lovecraft'},
   {label: 'El Dado Guardián', value: 'dado_guardian'},
-  {label: 'Guardianes del Tablero', value: 'guardianes_jdm'},
+  // {label: 'Guardianes del Tablero', value: 'guardianes_jdm'},
   {label: 'Guardianes del Rol', value: 'guardianes_rol'},
+  {label: 'Dia Plateado III', value: 'dia_plateado_3'},
   {label: 'Todas', value: 'all'}
 ];
