@@ -26,9 +26,6 @@
     "eject": "react-scripts eject",
     "deploy": "now --target=production"
   },
-  "devDependencies": {
-    "surge": "^0.20.1"
-  },
   "browserslist": {
     "production": [
       ">0.2%",
