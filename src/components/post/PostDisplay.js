@@ -6,7 +6,7 @@ import Button from '../Button';
 import Icon from '../Icon';
 import UserDisplay from '../UserDisplay';
 import ImgContainer from '../ImgContainer';
-import { Quill } from 'react-quill/dist/index';
+import { Quill } from 'react-quill/dist/react-quill';
 import Helmet from 'react-helmet';
 
 const PostDisplayStyle = styled.div`

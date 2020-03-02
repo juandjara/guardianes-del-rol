@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactQuill, { Quill } from 'react-quill/dist/index';
+import ReactQuill, { Quill } from 'react-quill/dist/react-quill';
 import ImageUpload from 'quill-plugin-image-upload';
 import ImageResize from 'quill-image-resize';
 import slugg from 'slugg';
