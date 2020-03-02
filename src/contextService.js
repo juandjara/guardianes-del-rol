@@ -66,7 +66,7 @@ export class ContextProvider extends Component {
   }
 
   makeUserFromAnon(user) {
-    const username = localStorage.getItem('anonUsername');
+    const username = localStorage.getItem('gdr_anon_username');
     return {
       ...user,
       displayName: username,
