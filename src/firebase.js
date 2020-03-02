@@ -13,10 +13,10 @@ const client = firebase.initializeApp({
   storageBucket: `gs://guardianes-2018.appspot.com`,
   projectId: 'guardianes-2018'
 })
+client.auth().useDeviceLanguage();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 
 export function loginWithGoogle() {
-  firebase.auth().useDeviceLanguage();
   return firebase.auth().signInWithPopup(googleProvider);
 }
 

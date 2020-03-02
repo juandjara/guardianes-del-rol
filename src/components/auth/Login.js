@@ -1,5 +1,5 @@
 import React, {Component, Fragment} from 'react';
-import { db, auth } from '../../firebase';
+import { auth } from '../../firebase';
 import styled from 'styled-components';
 import Button from '../Button';
 import FormGroup from '../FormGroup';
@@ -13,10 +13,12 @@ const LoginStyle = styled.div`
   h2 {
     text-align: center;
   }
-  form {
-    button {
-      margin-left: 0;
-    }
+  form button, .back-btn {
+    margin-left: 0;
+  }
+  .material-icons {
+    margin-bottom: 2px;
+    margin-right: 4px;
   }
   .mail-sent {
     font-size: 14px;
@@ -31,6 +33,16 @@ const LoginStyle = styled.div`
       margin: 0 2px;
     }
   }
+  .login-choose {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    button {
+      margin-bottom: 12px;
+    }
+  }
 `;
 
 class Login extends Component {
@@ -39,31 +51,13 @@ class Login extends Component {
     username: '',
     error: null,
     mailSent: false,
-    loading: false
-  }
-
-  checkWhitelist(email) {
-    return Promise.resolve();
-    // return db.collection('users')
-    // .doc(email)
-    // .get()
-    // .then(ref => {
-    //   if (!ref.exists) {
-    //     const err = new Error(`El email ${email} no está en la lista de invitados`);
-    //     return Promise.reject(err);
-    //   }
-    // })
+    loading: false,
+    loginForm: null
   }
 
   checkMail() {
     this.setState({loading: true});
-    this.checkWhitelist(this.state.email)
-    .then(() => {
-      this.sendSignInMail();
-    })
-    .catch(err => {
-      this.setState({loading: false, error: err.message})
-    })
+    this.sendSignInMail();
   }
 
   sendSignInMail() {
@@ -100,75 +94,133 @@ class Login extends Component {
     });
   }
 
+  renderWithMailSent () {
+    const mailDomain = this.state.email.replace(/^.+@/, '');
+    return (
+      <div className="mail-sent">
+        <header>
+          <span role="img" aria-label="sparkle">✨</span>
+          <Icon icon="mail" />
+          <span role="img" aria-label="sparkle">✨</span>          
+        </header>
+        <p>
+          Se ha enviado un enlace a tu correo.
+          <br />
+          Pulsalo para iniciar sesión.
+        </p>
+        <a href={`http://${mailDomain}`}>
+          <Button>Abrir {mailDomain}</Button>
+        </a>
+      </div>
+    )
+  }
+
+  renderAnonLogin () {
+    const {username, error} = this.state;
+    return (
+      <Fragment>
+        <FormGroup error={!!error} style={{marginBottom: 10}}>
+          <label htmlFor="username">Elige un nombre de usuario</label>
+          <input type="username" name="username" required
+            placeholder="Nombre de usuario"
+            value={username}
+            onChange={ev => this.setState({username: ev.target.value})} />
+        </FormGroup>
+        <Button type="submit" main onClick={() => this.anonLogin()}>
+          Entrar como invitado
+        </Button> 
+      </Fragment>
+    )
+  }
+
+  renderMailLogin () {
+    const {email, error, loading} = this.state;
+    return (
+      <Fragment>
+        <FormGroup error={!!error} style={{marginBottom: 10}}>
+          <label htmlFor="email">Introduce tu email para continuar</label>
+          <input type="email" name="email" required
+            placeholder="Email"
+            value={email}
+            onChange={ev => this.setState({email: ev.target.value})} />
+          <div className="error">{error}</div>
+        </FormGroup>
+        <Button type="submit" disabled={loading} main onClick={() => this.checkMail()}>
+          {loading ? (
+            <span>
+              Cargando...
+              <Icon icon="autorenew" className="spin" />
+            </span>
+          ) : 'Continuar'}
+        </Button>
+      </Fragment>
+    )
+  }
+
+  renderLoginForm () {
+    switch (this.state.loginForm) {
+      case 'email':
+        return (
+          <form onSubmit={(ev) => ev.preventDefault()}>
+            {this.renderMailLogin()}
+          </form>
+        )
+      case 'anon':
+        return (
+          <form onSubmit={(ev) => ev.preventDefault()}>
+            {this.renderAnonLogin()}
+          </form>
+        )
+      default:
+        return null
+    }
+  }
+
   render() {
-    const {username, email, mailSent, error, loading} = this.state;
-    const mailDomain = email.replace(/^.+@/, '');
+    const {mailSent, loginForm} = this.state;
     const redirection = this.props.location.state || {next: '/'};
     const user = this.props.user;
     
-    const useAnonLogin = true;
-
-    return user ? <Redirect to={redirection.next} /> : (
-      <LoginStyle className="container">
-        <h2>Bienvenido</h2>
-        {mailSent ? (
-          <div className="mail-sent">
-            <header>
-              <span role="img" aria-label="sparkle">✨</span>
-              <Icon icon="mail" />
-              <span role="img" aria-label="sparkle">✨</span>          
-            </header>
-            <p>
-              Se ha enviado un enlace a tu correo.
-              <br />
-              Pulsalo para iniciar sesión.
-            </p>
-            <a href={`http://${mailDomain}`}>
-              <Button>Abrir {mailDomain}</Button>
-            </a>
-          </div>
-        ) : (
-          <form onSubmit={(ev) => ev.preventDefault()}>
-            {useAnonLogin ? (
+    return user 
+      ? <Redirect to={redirection.next} />
+      : (
+        <LoginStyle className="container">
+          <h2>Bienvenido</h2>
+          {mailSent
+            ? this.renderWithMailSent()
+            : (
               <Fragment>
-                <FormGroup error={!!error} style={{marginBottom: 10}}>
-                  <label htmlFor="username">Elige un nombre de usuario</label>
-                  <input type="username" name="username" required
-                    placeholder="Nombre de usuario"
-                    value={username}
-                    onChange={ev => this.setState({username: ev.target.value})} />
-                </FormGroup>
-                <Button type="submit" main onClick={() => this.anonLogin()}>
-                  Entrar como invitado
-                </Button> 
+                {loginForm 
+                  ? (
+                    <div>
+                      <Button className="back-btn" onClick={() => this.setState({ loginForm: null })}>
+                        <Icon icon="arrow_back" size="1em" />
+                        Volver
+                      </Button>
+                      {this.renderLoginForm()}
+                    </div>
+                  )
+                  : (
+                    <div className="login-choose">
+                      <Button onClick={() => { this.setState({ loginForm: 'email' }) }}>
+                        <Icon icon="email" size="1em" />
+                        Entrar con tu correo
+                      </Button>
+                      <Button onClick={() => { this.setState({ loginForm: 'anon' }) }}>
+                        <Icon icon="person_outline" size="1em" />
+                        Entrar como invitado
+                      </Button>
+                    </div>
+                  )
+                }
+                <p style={{marginTop: 16, fontSize: 14, fontWeight: 300}}>
+                  Si tienes cualquier duda con el proceso de iniciar sesión puedes mandar un correo a <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a>
+                </p>
               </Fragment>
-            ) : (
-              <Fragment>
-                <FormGroup error={!!error} style={{marginBottom: 10}}>
-                  <label htmlFor="email">Introduce tu email para continuar</label>
-                  <input type="email" name="email" required
-                    placeholder="Email"
-                    value={email}
-                    onChange={ev => this.setState({email: ev.target.value})} />
-                  <div className="error">{error}</div>
-                </FormGroup>
-                <Button type="submit" disabled={loading} main onClick={() => this.checkMail()}>
-                  {loading ? (
-                    <span>
-                      Cargando...
-                      <Icon icon="autorenew" className="spin" />
-                    </span>
-                  ) : 'Continuar'}
-                </Button>
-              </Fragment>
-            )}
-            <p style={{marginTop: 16, fontSize: 14, fontWeight: 300}}>
-              Si tienes cualquier duda con el proceso de iniciar sesión puedes mandar un correo a <a href="mailto:guardianesdelrol@gmail.com">guardianesdelrol@gmail.com</a>
-            </p>
-          </form>
-        )}
-      </LoginStyle>
-    )
+            )
+          }
+        </LoginStyle>
+      )
   }
 
 }

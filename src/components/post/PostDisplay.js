@@ -27,6 +27,9 @@ const PostDisplayStyle = styled.div`
     .flex-space {
       flex: 1 1 auto;
     }
+    + p {
+      margin-top: 24px;
+    }
   }
   > p {
     margin-top: 16px;
@@ -38,19 +41,21 @@ const PostDisplayStyle = styled.div`
     margin: 8px 12px 24px 12px;
   }
   .details {
-    p, .user-wrapper {
-      margin: 10px;
+    margin-top: 24px;
+    > p, .user-wrapper {
+      margin: 8px;
+      line-height: 20px;
     }
   }
   .description {
     font-size: 14px;
     line-height: 20px;
-    margin: 10px 0;
+    margin: 12px 0;
     > strong {
       margin-left: 10px;
     }
     .inner {
-      padding: 8px 16px;
+      padding: 8px;
       p {
         margin: 0;
       }
@@ -107,10 +112,6 @@ class PostDisplay extends Component {
         }
       })
     })
-  }
-
-  goBack() {
-    this.props.history.goBack();
   }
 
   join() {
@@ -172,10 +173,12 @@ class PostDisplay extends Component {
           </Helmet>
         )}
         <nav>
-          <Button className="back-btn" onClick={() => this.goBack()}>
-            <Icon icon="arrow_back" size="1em" />
-            Volver
-          </Button>
+          <Link to={`/post?day=${post.date}`}>
+            <Button className="back-btn">
+              <Icon icon="arrow_back" size="1em" />
+              Volver
+            </Button>
+          </Link>
           <div className="flex-space"></div>
           {canEdit && (<Link to={`/post/${post.id}/edit`}>
             <Button>
@@ -212,6 +215,10 @@ class PostDisplay extends Component {
               photoURL={post.narrator.photoURL} />
           </div>
           <p>
+            <strong>Plazas: </strong>
+            {post.fullSeats} / {post.totalSeats}
+          </p>
+          <p>
             <strong>Lugar: </strong>
             {post.place}
           </p>
@@ -220,15 +227,10 @@ class PostDisplay extends Component {
             {post.date} {post.hour}
           </p>
           <p>
-            <strong>Plazas: </strong>
-            {post.fullSeats} / {post.totalSeats}
-          </p>
-          <p>
             <strong>Jugadores: </strong>
             {players}
           </p>
           <div className="description">
-            <strong>Descripción: </strong>
             <div className="inner" dangerouslySetInnerHTML={{__html: this.state.post.description}}></div>
           </div>
         </div>

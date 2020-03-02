@@ -17,7 +17,8 @@ const PostListStyle = styled.div`
   > h2 {
     text-align: center;
     font-size: 32px;
-    margin: 16px;
+    margin-top: 16px;
+    margin-bottom: 32px;
   }
   .material-icons {
     margin-right: 4px;
@@ -78,7 +79,8 @@ const PostListStyle = styled.div`
     }
   }
   .section-selector {
-    margin: 16px 0;
+    margin-top: 32px;
+    margin-bottom: 16px;
     > label {
       display: block;
       margin-bottom: 4px;
@@ -104,7 +106,7 @@ const PostDetails = styled.li`
       p, .user-wrapper {
         font-size: 14px;
         line-height: 18px;
-        margin-top: .5em;
+        margin-top: 12px;
       }
       @media (min-width: 600px) {
         flex-basis: auto;
@@ -159,12 +161,14 @@ class PostList extends Component {
   filterPrevWeek() {
     const startDate = subWeeks(this.state.startDate, 1);
     const endDate = subWeeks(this.state.endDate, 1);
+    this.props.history.push(`/post?day=${endDate.toJSON().split('T')[0]}`);
     this.setState({startDate, endDate});
   }
 
   filterNextWeek() {
     const startDate = addWeeks(this.state.startDate, 1);
     const endDate = addWeeks(this.state.endDate, 1);
+    this.props.history.push(`/post?day=${endDate.toJSON().split('T')[0]}`);
     this.setState({startDate, endDate});
   }
 
@@ -198,7 +202,7 @@ class PostList extends Component {
             <ImgContainer role="img" 
               aria-label="imagen de portada"
               className="main-img"
-              min={210}
+              min={230}
               src={post.mainImageUrl} />
           </Link>
           <div className="info">
@@ -211,10 +215,6 @@ class PostList extends Component {
               <br /> {post.date} {post.hour}
             </p>
             <p>
-              <strong>Plazas:</strong>
-              {' '}{post.fullSeats} / {post.totalSeats}
-            </p>
-            <p>
               <strong>Sección:</strong>
               <br /> {section}
             </p>
@@ -224,6 +224,10 @@ class PostList extends Component {
                 displayName={post.narrator.displayName}
                 photoURL={post.narrator.photoURL} />
             </div>
+            <p>
+              <strong>Plazas:</strong>
+              {' '}{post.fullSeats} / {post.totalSeats}
+            </p>
           </div>
         </div>
         <Link className="title" to={`/post/${post.id}`}>
