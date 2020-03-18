@@ -157,8 +157,8 @@ class Login extends Component {
     )
   }
 
-  renderLoginForm () {
-    switch (this.state.loginForm) {
+  renderLoginForm (loginForm) {
+    switch (loginForm) {
       case 'email':
         return (
           <form onSubmit={(ev) => ev.preventDefault()}>
@@ -177,7 +177,9 @@ class Login extends Component {
   }
 
   render() {
-    const {mailSent, loginForm} = this.state;
+    // const {mailSent, loginForm} = this.state;
+    const mailSent = this.state.mailSent;
+    const loginForm = 'email'
     const redirection = this.props.location.state || {next: '/'};
     const user = this.props.user;
     
@@ -197,7 +199,7 @@ class Login extends Component {
                         <Icon icon="arrow_back" size="1em" />
                         Volver
                       </Button>
-                      {this.renderLoginForm()}
+                      {this.renderLoginForm(loginForm)}
                     </div>
                   )
                   : (
