@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Icon from '../Icon';
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 import { Redirect } from 'react-router-dom';
 
 const LoginConfirmStyle = styled.div`
@@ -32,6 +32,9 @@ class LoginConfirm extends Component {
     const params = new URLSearchParams(this.props.location.search);
     this.setState({redirection: params.get('next')});
   }
+  checkCreateUser (email) {
+    return db.collection('users').doc(email).set({ email }, { merge: true })
+  }
   finishLogin() {
     if (!auth.isSignInWithEmailLink(window.location.href)) {
       console.log('this url is not valid for login with email link');
@@ -42,6 +45,7 @@ class LoginConfirm extends Component {
       email = window.prompt('Por favor, vuelve a introducir tu email');
     }
     auth.signInWithEmailLink(email, window.location.href)
+    .then(() => this.checkCreateUser(email))
     .then(() => {
       window.localStorage.removeItem('tempLoginEmail');
       this.activeRedirection();
