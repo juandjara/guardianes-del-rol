@@ -83,7 +83,10 @@ class ImageGallery extends Component {
       ...state,
       images: state.images.concat(image)
     }), () => {
-      const lastImgNode = Array.from(this._containerNode.querySelectorAll('.img-container')).slice(-1)[0];
+      const nodes = this._containerNode
+        ? Array.from(this._containerNode.querySelectorAll('.img-container'))
+        : []
+      const lastImgNode = nodes.slice(-1)[0];
       if (lastImgNode) {
         lastImgNode.scrollIntoView();
       }
