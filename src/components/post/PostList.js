@@ -87,6 +87,14 @@ const PostListStyle = styled.div`
       font-size: 14px;
     }
   }
+
+  .nodata {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 1rem;
+    font-size: 14px;
+    color: #666;
+  }
 `;
 
 const PostDetails = styled.li`
@@ -161,14 +169,16 @@ class PostList extends Component {
   filterPrevWeek() {
     const startDate = subWeeks(this.state.startDate, 1);
     const endDate = subWeeks(this.state.endDate, 1);
-    this.props.history.push(`/post?day=${endDate.toJSON().split('T')[0]}`);
+    const themeStr = this.props.theme ? `&theme=${this.props.theme}` : ''
+    this.props.history.push(`/post?day=${endDate.toJSON().split('T')[0]}${themeStr}`);
     this.setState({startDate, endDate});
   }
 
   filterNextWeek() {
     const startDate = addWeeks(this.state.startDate, 1);
     const endDate = addWeeks(this.state.endDate, 1);
-    this.props.history.push(`/post?day=${endDate.toJSON().split('T')[0]}`);
+    const themeStr = this.props.theme ? `&theme=${this.props.theme}` : ''
+    this.props.history.push(`/post?day=${endDate.toJSON().split('T')[0]}${themeStr}`);
     this.setState({startDate, endDate});
   }
 
@@ -284,6 +294,9 @@ class PostList extends Component {
           <p>Semana {startDate} - {endDate}</p>
           <Button onClick={() => this.filterNextWeek()}><Icon icon="arrow_right" /></Button>
         </div>
+        {posts.length === 0 && (
+          <p className="nodata">No hay partidas esta semana</p>
+        )}
         {this.state.loading ? 'Cargando...' : (
           <ul>{posts.map(post => this.renderPost(post))}</ul>
         )}
