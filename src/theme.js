@@ -13,5 +13,6 @@ export const themeOptions = [
   // {label: 'Guardianes del Tablero', value: 'guardianes_jdm'},
   {label: 'Guardianes del Rol', value: 'guardianes_rol'},
   {label: 'Dia Plateado III', value: 'dia_plateado_3'},
+  {label: 'El Pícaro del Rol: Sobrevive al 20-20', value: 'elpicarodelrol'},
   {label: 'Todas', value: 'all'}
 ];
